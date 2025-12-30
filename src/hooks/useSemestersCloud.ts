@@ -239,8 +239,8 @@ export const useSemestersCloud = () => {
 
   // Calculate results
   const semesterResults: SemesterResult[] = calculateSemesterResults(semesters);
-  const { cpa, totalCredits: cpaTotalCredits } = calculateCPA(semesterResults);
-  const { gpa: overallGPA, totalCredits: gpaTotalCredits } = calculateGPAFromMainSemesters(semesterResults);
+  const { cpa, accumulatedCredits: cpaAccumulatedCredits } = calculateCPA(semesterResults);
+  const { gpa: overallGPA, accumulatedCredits: gpaAccumulatedCredits } = calculateGPAFromMainSemesters(semesterResults);
 
   // Calculate failed credits using the utility function
   const { failedCredits, failedCourses } = calculateFailedCredits(semesterResults);
@@ -249,9 +249,9 @@ export const useSemestersCloud = () => {
     semesters,
     semesterResults,
     cpa,
-    cpaTotalCredits,
+    cpaTotalCredits: cpaAccumulatedCredits,
     overallGPA,
-    gpaTotalCredits,
+    gpaTotalCredits: gpaAccumulatedCredits,
     failedCredits,
     failedCourses,
     loading,

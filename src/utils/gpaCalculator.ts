@@ -100,38 +100,49 @@ export const calculateSemesterResults = (semesters: Semester[]): SemesterResult[
   });
 };
 
-export const calculateCPA = (semesterResults: SemesterResult[]): { cpa: number; totalCredits: number } => {
+export const calculateCPA = (semesterResults: SemesterResult[]): { cpa: number; totalCredits: number; accumulatedCredits: number } => {
   // Include ALL courses (including F grades) in CPA calculation
   const allCourses = semesterResults.flatMap(sr => sr.calculatedCourses);
 
   if (allCourses.length === 0) {
-    return { cpa: 0, totalCredits: 0 };
+    return { cpa: 0, totalCredits: 0, accumulatedCredits: 0 };
   }
 
+  // Total credits includes all courses (for CPA calculation)
   const totalCredits = allCourses.reduce((sum, c) => sum + c.credits, 0);
   const weightedSum = allCourses.reduce((sum, c) => sum + c.gradePoint4 * c.credits, 0);
   
+  // Accumulated credits only counts passed courses (not F)
+  const accumulatedCredits = allCourses
+    .filter(c => c.letterGrade !== 'F' && c.gradePoint4 > 0)
+    .reduce((sum, c) => sum + c.credits, 0);
+  
   const cpa = Math.round((weightedSum / totalCredits) * 100) / 100;
   
-  return { cpa, totalCredits };
+  return { cpa, totalCredits, accumulatedCredits };
 };
 
-export const calculateGPAFromMainSemesters = (semesterResults: SemesterResult[]): { gpa: number; totalCredits: number } => {
+export const calculateGPAFromMainSemesters = (semesterResults: SemesterResult[]): { gpa: number; totalCredits: number; accumulatedCredits: number } => {
   const mainSemesterResults = semesterResults.filter(sr => sr.semester.type === 'main');
   
   // Include ALL courses (including F grades) in GPA calculation
   const allCourses = mainSemesterResults.flatMap(sr => sr.calculatedCourses);
 
   if (allCourses.length === 0) {
-    return { gpa: 0, totalCredits: 0 };
+    return { gpa: 0, totalCredits: 0, accumulatedCredits: 0 };
   }
 
   const totalCredits = allCourses.reduce((sum, c) => sum + c.credits, 0);
   const weightedSum = allCourses.reduce((sum, c) => sum + c.gradePoint4 * c.credits, 0);
   
+  // Accumulated credits only counts passed courses (not F)
+  const accumulatedCredits = allCourses
+    .filter(c => c.letterGrade !== 'F' && c.gradePoint4 > 0)
+    .reduce((sum, c) => sum + c.credits, 0);
+  
   const gpa = Math.round((weightedSum / totalCredits) * 100) / 100;
   
-  return { gpa, totalCredits };
+  return { gpa, totalCredits, accumulatedCredits };
 };
 
 // Calculate failed credits (courses with F grade or gradePoint4 = 0)
