@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { User, LogOut, IdCard } from 'lucide-react';
+import { User, LogOut, IdCard, Edit3 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 
 interface Profile {
@@ -59,6 +59,7 @@ const UserMenu = () => {
           <span className="hidden sm:inline">
             {profile?.full_name || profile?.mssv || 'Tài khoản'}
           </span>
+          <Edit3 className="h-3 w-3 text-primary animate-pulse" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
