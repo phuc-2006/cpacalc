@@ -241,6 +241,20 @@ export const useSemestersCloud = () => {
   const { cpa, totalCredits: cpaTotalCredits } = calculateCPA(semesterResults);
   const { gpa: overallGPA, totalCredits: gpaTotalCredits } = calculateGPAFromMainSemesters(semesterResults);
 
+  // Calculate failed credits (F grade = score < 4.0)
+  const failedCredits = semesterResults.reduce((total, result) => {
+    const semesterFailedCredits = result.calculatedCourses
+      .filter(course => course.isValid && course.letterGrade === 'F')
+      .reduce((sum, course) => sum + course.credits, 0);
+    return total + semesterFailedCredits;
+  }, 0);
+
+  const failedCourses = semesterResults.reduce((total, result) => {
+    return total + result.calculatedCourses.filter(
+      course => course.isValid && course.letterGrade === 'F'
+    ).length;
+  }, 0);
+
   return {
     semesters,
     semesterResults,
@@ -248,6 +262,8 @@ export const useSemestersCloud = () => {
     cpaTotalCredits,
     overallGPA,
     gpaTotalCredits,
+    failedCredits,
+    failedCourses,
     loading,
     addSemester,
     deleteSemester,
