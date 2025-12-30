@@ -55,20 +55,13 @@ const Index = () => {
         </section>
 
         {/* Stats Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <StatsCard
-            title="GPA Tổng"
-            value={overallGPA}
-            subtitle={`${gpaTotalCredits} tín chỉ (kỳ chính)`}
-            showClassification
-            variant="primary"
-          />
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
           <StatsCard
             title="CPA Toàn khóa"
             value={cpa}
-            subtitle={`${cpaTotalCredits} tín chỉ (tất cả)`}
+            subtitle={`${cpaTotalCredits} tín chỉ tích lũy`}
             showClassification
-            variant="secondary"
+            variant="primary"
           />
           <div className="rounded-2xl bg-card p-6 card-shadow animate-scale-in">
             <div className="flex items-center gap-3 mb-2">
