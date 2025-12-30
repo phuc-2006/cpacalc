@@ -7,25 +7,24 @@ interface GPATrendChartProps {
 
 const GPATrendChart = ({ semesterResults }: GPATrendChartProps) => {
   // Filter only main semesters and prepare data for chart
-  const chartData = semesterResults
-    .filter(result => result.semester.type === 'main' && result.totalCredits > 0)
-    .map((result, index, arr) => {
-      // Calculate cumulative CPA up to this semester
-      let totalPoints = 0;
-      let totalCredits = 0;
-      for (let i = 0; i <= index; i++) {
-        const r = arr[i];
-        totalPoints += r.gpa * r.totalCredits;
-        totalCredits += r.totalCredits;
-      }
-      const cumulativeCPA = totalCredits > 0 ? totalPoints / totalCredits : 0;
+  const mainSemesterResults = semesterResults.filter(result => result.semester.type === 'main' && result.totalCredits > 0);
+  
+  const chartData = mainSemesterResults.map((result, index) => {
+    // Calculate cumulative CPA up to this semester using all courses (including F grades)
+    const allCoursesUpToNow = mainSemesterResults
+      .slice(0, index + 1)
+      .flatMap(r => r.calculatedCourses);
+    
+    const totalCredits = allCoursesUpToNow.reduce((sum, c) => sum + c.credits, 0);
+    const weightedSum = allCoursesUpToNow.reduce((sum, c) => sum + c.gradePoint4 * c.credits, 0);
+    const cumulativeCPA = totalCredits > 0 ? weightedSum / totalCredits : 0;
 
-      return {
-        name: result.semester.name,
-        GPA: Number(result.gpa.toFixed(2)),
-        CPA: Number(cumulativeCPA.toFixed(2)),
-      };
-    });
+    return {
+      name: result.semester.name,
+      GPA: Number(result.gpa.toFixed(2)),
+      CPA: Number(cumulativeCPA.toFixed(2)),
+    };
+  });
 
   if (chartData.length === 0) {
     return (
