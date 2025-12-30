@@ -14,7 +14,110 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      courses: {
+        Row: {
+          code: string
+          coefficient_pair: string
+          created_at: string
+          credits: number
+          final_score: number
+          id: string
+          name: string
+          process_score: number
+          semester_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          code: string
+          coefficient_pair: string
+          created_at?: string
+          credits: number
+          final_score: number
+          id?: string
+          name: string
+          process_score: number
+          semester_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          code?: string
+          coefficient_pair?: string
+          created_at?: string
+          credits?: number
+          final_score?: number
+          id?: string
+          name?: string
+          process_score?: number
+          semester_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "courses_semester_id_fkey"
+            columns: ["semester_id"]
+            isOneToOne: false
+            referencedRelation: "semesters"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string
+          full_name: string | null
+          id: string
+          mssv: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          mssv: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          full_name?: string | null
+          id?: string
+          mssv?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      semesters: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          type: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          type: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          type?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
