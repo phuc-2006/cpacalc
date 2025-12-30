@@ -1,12 +1,14 @@
-import { Calculator, BookOpen, TrendingUp, Award } from 'lucide-react';
+import { Calculator, BookOpen, TrendingUp, Award, Loader2 } from 'lucide-react';
 import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
 import SemesterCard from '@/components/SemesterCard';
 import AddSemesterDialog from '@/components/AddSemesterDialog';
 import GradeTable from '@/components/GradeTable';
-import { useSemesters } from '@/hooks/useSemesters';
+import { useSemestersCloud } from '@/hooks/useSemestersCloud';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Index = () => {
+  const { user, loading: authLoading } = useAuth();
   const {
     semesters,
     semesterResults,
@@ -14,14 +16,16 @@ const Index = () => {
     cpaTotalCredits,
     overallGPA,
     gpaTotalCredits,
+    loading: dataLoading,
     addSemester,
     deleteSemester,
     addCourse,
     deleteCourse,
     updateCourse,
-  } = useSemesters();
+  } = useSemestersCloud();
 
   const totalCourses = semesters.reduce((sum, s) => sum + s.courses.length, 0);
+  const isLoading = authLoading || dataLoading;
 
   return (
     <div className="min-h-screen bg-background">
@@ -39,6 +43,11 @@ const Index = () => {
                 Công cụ tính điểm trung bình tích lũy dành cho sinh viên Việt Nam. 
                 Nhập điểm, tự động quy đổi và xem xếp loại học lực.
               </p>
+              {!user && (
+                <p className="text-sm text-accent mt-3">
+                  💡 Đăng nhập để lưu dữ liệu và truy cập từ mọi nơi
+                </p>
+              )}
             </div>
           </div>
         </section>
@@ -92,18 +101,23 @@ const Index = () => {
               <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
             </div>
 
-            {semesterResults.length === 0 ? (
+            {isLoading ? (
+              <div className="rounded-2xl border-2 border-dashed border-border p-12 text-center">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto mb-4" />
+                <p className="text-muted-foreground">Đang tải dữ liệu...</p>
+              </div>
+            ) : semesterResults.length === 0 ? (
               <div className="rounded-2xl border-2 border-dashed border-border p-12 text-center">
                 <div className="mx-auto w-16 h-16 rounded-full bg-muted flex items-center justify-center mb-4">
                   <Award className="h-8 w-8 text-muted-foreground" />
                 </div>
                 <h3 className="text-lg font-semibold text-foreground mb-2">
-                  Chưa có học kỳ nào
+                  {user ? 'Chưa có học kỳ nào' : 'Đăng nhập để bắt đầu'}
                 </h3>
                 <p className="text-muted-foreground mb-4">
-                  Bắt đầu bằng cách thêm học kỳ đầu tiên của bạn
+                  {user ? 'Bắt đầu bằng cách thêm học kỳ đầu tiên của bạn' : 'Đăng nhập để lưu và quản lý điểm số của bạn'}
                 </p>
-                <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
+                {user && <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />}
               </div>
             ) : (
               <div className="space-y-4">
@@ -142,7 +156,7 @@ const Index = () => {
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-primary">•</span>
-                  <span>Dữ liệu được lưu tự động trên trình duyệt</span>
+                  <span>Dữ liệu được lưu tự động trên cloud</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span className="text-accent">•</span>
