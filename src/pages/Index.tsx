@@ -1,4 +1,4 @@
-import { Calculator, BookOpen, TrendingUp, Award, Loader2 } from 'lucide-react';
+import { Calculator, BookOpen, TrendingUp, Award, Loader2, AlertTriangle } from 'lucide-react';
 import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
 import SemesterCard from '@/components/SemesterCard';
@@ -16,6 +16,8 @@ const Index = () => {
     cpaTotalCredits,
     overallGPA,
     gpaTotalCredits,
+    failedCredits,
+    failedCourses,
     loading: dataLoading,
     addSemester,
     deleteSemester,
@@ -53,7 +55,7 @@ const Index = () => {
         </section>
 
         {/* Stats Grid */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
           <StatsCard
             title="GPA Tổng"
             value={overallGPA}
@@ -89,6 +91,24 @@ const Index = () => {
                 <p className="text-2xl font-bold text-foreground">{totalCourses}</p>
               </div>
             </div>
+          </div>
+          <div className={`rounded-2xl p-6 card-shadow animate-scale-in ${failedCredits > 0 ? 'bg-destructive/10 border border-destructive/20' : 'bg-card'}`}>
+            <div className="flex items-center gap-3 mb-2">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${failedCredits > 0 ? 'bg-destructive/20' : 'bg-muted'}`}>
+                <AlertTriangle className={`h-5 w-5 ${failedCredits > 0 ? 'text-destructive' : 'text-muted-foreground'}`} />
+              </div>
+              <div>
+                <p className="text-sm text-muted-foreground">Tín chỉ nợ</p>
+                <p className={`text-2xl font-bold ${failedCredits > 0 ? 'text-destructive' : 'text-foreground'}`}>
+                  {failedCredits}
+                </p>
+              </div>
+            </div>
+            {failedCourses > 0 && (
+              <p className="text-xs text-destructive mt-1">
+                {failedCourses} môn điểm F
+              </p>
+            )}
           </div>
         </section>
 
