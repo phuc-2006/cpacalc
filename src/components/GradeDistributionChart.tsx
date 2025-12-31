@@ -5,7 +5,7 @@ interface GradeDistributionChartProps {
   semesterResults: SemesterResult[];
 }
 
-const gradeOrder = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D', 'F'];
+const gradeOrder = ['A+', 'A', 'B+', 'B', 'C+', 'C', 'D+', 'D'];
 
 const gradeColors: Record<string, string> = {
   'A+': 'hsl(142 76% 36%)',
@@ -16,7 +16,6 @@ const gradeColors: Record<string, string> = {
   'C': 'hsl(199 89% 56%)',
   'D+': 'hsl(38 92% 50%)',
   'D': 'hsl(38 92% 58%)',
-  'F': 'hsl(0 84% 60%)',
 };
 
 const GradeDistributionChart = ({ semesterResults }: GradeDistributionChartProps) => {
@@ -86,28 +85,6 @@ const GradeDistributionChart = ({ semesterResults }: GradeDistributionChartProps
             </Bar>
           </BarChart>
         </ResponsiveContainer>
-      </div>
-      <div className="flex flex-wrap gap-2 mt-4 justify-center">
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: gradeColors['A+'] }} />
-          <span className="text-xs text-muted-foreground">Xuất sắc</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: gradeColors['B+'] }} />
-          <span className="text-xs text-muted-foreground">Giỏi</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: gradeColors['C+'] }} />
-          <span className="text-xs text-muted-foreground">Khá</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: gradeColors['D+'] }} />
-          <span className="text-xs text-muted-foreground">TB</span>
-        </div>
-        <div className="flex items-center gap-1">
-          <div className="w-2 h-2 rounded-full" style={{ backgroundColor: gradeColors['F'] }} />
-          <span className="text-xs text-muted-foreground">Yếu</span>
-        </div>
       </div>
     </div>
   );
