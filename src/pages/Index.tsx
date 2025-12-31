@@ -6,6 +6,7 @@ import AddSemesterDialog from '@/components/AddSemesterDialog';
 import GradeTable from '@/components/GradeTable';
 import GPATrendChart from '@/components/GPATrendChart';
 import GPAPredictor from '@/components/GPAPredictor';
+import GradeDistributionChart from '@/components/GradeDistributionChart';
 import { useSemestersCloud } from '@/hooks/useSemestersCloud';
 import { useAuth } from '@/contexts/AuthContext';
 
@@ -153,6 +154,7 @@ const Index = () => {
           {/* Sidebar */}
           <div className="space-y-6">
             <GPATrendChart semesterResults={semesterResults} />
+            <GradeDistributionChart semesterResults={semesterResults} />
             <GPAPredictor currentCPA={cpa} currentTotalCredits={cpaTotalCredits} />
             <GradeTable />
             
