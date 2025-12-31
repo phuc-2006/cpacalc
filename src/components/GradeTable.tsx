@@ -69,7 +69,7 @@ const GradeTable = () => {
                   <tr key={item.classification} className="hover:bg-muted/30">
                     <td className="px-3 py-2 text-foreground">{item.range}</td>
                     <td className="px-3 py-2">
-                      <span className={`${item.color} px-2 py-1 rounded-full text-xs font-medium text-primary-foreground`}>
+                      <span className={`${item.color} px-2 py-1 rounded-full text-xs font-medium text-primary-foreground whitespace-nowrap`}>
                         {item.classification}
                       </span>
                     </td>
