@@ -1,7 +1,10 @@
-import { Trash2, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Trash2, AlertCircle, Pencil, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { CalculatedCourse, Course } from '@/types/gpa';
+import { CalculatedCourse, Course, CoefficientPair } from '@/types/gpa';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CourseRowProps {
