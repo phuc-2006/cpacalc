@@ -121,7 +121,6 @@ const Index = () => {
                 <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
               </div>
             </div>
-            </div>
 
             {isLoading ? (
               <div className="rounded-2xl border-2 border-dashed border-border p-12 text-center">
