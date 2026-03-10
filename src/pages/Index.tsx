@@ -116,7 +116,11 @@ const Index = () => {
           <div className="xl:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-foreground">Danh sách học kỳ</h2>
-              <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
+              <div className="flex items-center gap-2">
+                <ImportExportButtons semesters={semesters} onImport={importData} />
+                <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
+              </div>
+            </div>
             </div>
 
             {isLoading ? (
