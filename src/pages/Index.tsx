@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
 import SemesterCard from '@/components/SemesterCard';
 import AddSemesterDialog from '@/components/AddSemesterDialog';
+import ImportExportButtons from '@/components/ImportExportButtons';
 import GradeTable from '@/components/GradeTable';
 import GPATrendChart from '@/components/GPATrendChart';
 import GPAPredictor from '@/components/GPAPredictor';
