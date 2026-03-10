@@ -28,6 +28,7 @@ const Index = () => {
     addCourse,
     deleteCourse,
     updateCourse,
+    importData,
   } = useSemestersCloud();
 
   const totalCourses = semesters.reduce((sum, s) => sum + s.courses.length, 0);
