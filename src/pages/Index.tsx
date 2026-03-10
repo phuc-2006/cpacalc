@@ -3,6 +3,7 @@ import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
 import SemesterCard from '@/components/SemesterCard';
 import AddSemesterDialog from '@/components/AddSemesterDialog';
+import ImportExportButtons from '@/components/ImportExportButtons';
 import GradeTable from '@/components/GradeTable';
 import GPATrendChart from '@/components/GPATrendChart';
 import GPAPredictor from '@/components/GPAPredictor';
@@ -27,6 +28,7 @@ const Index = () => {
     addCourse,
     deleteCourse,
     updateCourse,
+    importData,
   } = useSemestersCloud();
 
   const totalCourses = semesters.reduce((sum, s) => sum + s.courses.length, 0);
@@ -114,7 +116,10 @@ const Index = () => {
           <div className="xl:col-span-2 space-y-4">
             <div className="flex items-center justify-between">
               <h2 className="text-xl font-semibold text-foreground">Danh sách học kỳ</h2>
-              <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
+              <div className="flex items-center gap-2">
+                <ImportExportButtons semesters={semesters} onImport={importData} />
+                <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
+              </div>
             </div>
 
             {isLoading ? (

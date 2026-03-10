@@ -237,6 +237,41 @@ export const useSemestersCloud = () => {
     }
   }, [user, toast]);
 
+  const importData = useCallback(async (data: Array<{ name: string; type: string; courses: Array<Omit<Course, 'id'>> }>) => {
+    if (!user) return;
+
+    try {
+      for (const sem of data) {
+        const semId = generateId();
+        const { error: semError } = await supabase
+          .from('semesters')
+          .insert({ id: semId, user_id: user.id, name: sem.name, type: sem.type });
+        if (semError) throw semError;
+
+        if (sem.courses.length > 0) {
+          const coursesInsert = sem.courses.map(c => ({
+            id: generateId(),
+            semester_id: semId,
+            user_id: user.id,
+            name: c.name,
+            code: c.code,
+            credits: c.credits,
+            process_score: c.processScore,
+            final_score: c.finalScore,
+            coefficient_pair: c.coefficientPair,
+          }));
+          const { error: courseError } = await supabase.from('courses').insert(coursesInsert);
+          if (courseError) throw courseError;
+        }
+      }
+
+      await loadData();
+    } catch (error) {
+      console.error('Error importing data:', error);
+      toast({ title: 'Lỗi', description: 'Không thể import dữ liệu', variant: 'destructive' });
+    }
+  }, [user, toast, loadData]);
+
   // Calculate results
   const semesterResults: SemesterResult[] = calculateSemesterResults(semesters);
   const { cpa, accumulatedCredits: cpaAccumulatedCredits } = calculateCPA(semesterResults);
@@ -260,6 +295,7 @@ export const useSemestersCloud = () => {
     addCourse,
     deleteCourse,
     updateCourse,
+    importData,
     refetch: loadData,
   };
 };

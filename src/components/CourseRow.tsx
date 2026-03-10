@@ -1,7 +1,10 @@
-import { Trash2, AlertCircle } from 'lucide-react';
+import { useState } from 'react';
+import { Trash2, AlertCircle, Pencil, Check, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { cn } from '@/lib/utils';
-import { CalculatedCourse, Course } from '@/types/gpa';
+import { CalculatedCourse, Course, CoefficientPair } from '@/types/gpa';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 interface CourseRowProps {
@@ -18,8 +21,90 @@ const getGradeColor = (letterGrade: string): string => {
   return 'bg-destructive/20 text-destructive';
 };
 
-const CourseRow = ({ course, onDelete }: CourseRowProps) => {
+const CourseRow = ({ course, onDelete, onUpdate }: CourseRowProps) => {
+  const [isEditing, setIsEditing] = useState(false);
+  const [editData, setEditData] = useState({
+    code: course.code,
+    name: course.name,
+    credits: course.credits.toString(),
+    processScore: course.processScore.toString(),
+    finalScore: course.finalScore.toString(),
+    coefficientPair: course.coefficientPair as string,
+  });
+
   const coefficientDisplay = course.coefficientPair.split('-').join(' - ');
+
+  const handleSave = () => {
+    onUpdate({
+      code: editData.code.toUpperCase(),
+      name: editData.name,
+      credits: parseInt(editData.credits),
+      processScore: parseFloat(editData.processScore),
+      finalScore: parseFloat(editData.finalScore),
+      coefficientPair: editData.coefficientPair as CoefficientPair,
+    });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setEditData({
+      code: course.code,
+      name: course.name,
+      credits: course.credits.toString(),
+      processScore: course.processScore.toString(),
+      finalScore: course.finalScore.toString(),
+      coefficientPair: course.coefficientPair,
+    });
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <tr className="bg-muted/30">
+        <td className="px-4 py-2">
+          <Input value={editData.code} onChange={e => setEditData(d => ({ ...d, code: e.target.value }))} className="h-8 uppercase text-sm" />
+        </td>
+        <td className="px-4 py-2">
+          <Input value={editData.name} onChange={e => setEditData(d => ({ ...d, name: e.target.value }))} className="h-8 text-sm" />
+        </td>
+        <td className="px-4 py-2">
+          <Select value={editData.credits} onValueChange={v => setEditData(d => ({ ...d, credits: v }))}>
+            <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {[1,2,3,4,5,6].map(c => <SelectItem key={c} value={c.toString()}>{c}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </td>
+        <td className="px-4 py-2">
+          <Input type="number" value={editData.processScore} onChange={e => setEditData(d => ({ ...d, processScore: e.target.value }))} className="h-8 text-sm text-center" min="0" max="10" step="0.1" />
+        </td>
+        <td className="px-4 py-2">
+          <Input type="number" value={editData.finalScore} onChange={e => setEditData(d => ({ ...d, finalScore: e.target.value }))} className="h-8 text-sm text-center" min="0" max="10" step="0.1" />
+        </td>
+        <td className="px-4 py-2">
+          <Select value={editData.coefficientPair} onValueChange={v => setEditData(d => ({ ...d, coefficientPair: v }))}>
+            <SelectTrigger className="h-8 text-sm"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              <SelectItem value="3-7">3-7</SelectItem>
+              <SelectItem value="4-6">4-6</SelectItem>
+              <SelectItem value="5-5">5-5</SelectItem>
+            </SelectContent>
+          </Select>
+        </td>
+        <td colSpan={3} />
+        <td className="px-4 py-2">
+          <div className="flex gap-1 justify-center">
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-primary hover:text-primary" onClick={handleSave}>
+              <Check className="h-4 w-4" />
+            </Button>
+            <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={handleCancel}>
+              <X className="h-4 w-4" />
+            </Button>
+          </div>
+        </td>
+      </tr>
+    );
+  }
 
   return (
     <tr className={cn(
@@ -81,14 +166,24 @@ const CourseRow = ({ course, onDelete }: CourseRowProps) => {
         {course.isValid ? course.gradePoint4.toFixed(1) : '-'}
       </td>
       <td className="px-4 py-3 text-center">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onDelete}
-          className="h-8 w-8 text-muted-foreground hover:text-destructive"
-        >
-          <Trash2 className="h-4 w-4" />
-        </Button>
+        <div className="flex gap-1 justify-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setIsEditing(true)}
+            className="h-8 w-8 text-muted-foreground hover:text-primary"
+          >
+            <Pencil className="h-4 w-4" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onDelete}
+            className="h-8 w-8 text-muted-foreground hover:text-destructive"
+          >
+            <Trash2 className="h-4 w-4" />
+          </Button>
+        </div>
       </td>
     </tr>
   );
