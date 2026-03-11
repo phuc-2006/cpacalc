@@ -72,14 +72,12 @@ export const calculateCourseScore = (course: Course): CalculatedCourse => {
 };
 
 export const calculateSemesterGPA = (courses: CalculatedCourse[]): { gpa: number; totalCredits: number } => {
-  const validCourses = courses.filter(c => c.isValid);
-  
-  if (validCourses.length === 0) {
+  if (courses.length === 0) {
     return { gpa: 0, totalCredits: 0 };
   }
 
-  const totalCredits = validCourses.reduce((sum, c) => sum + c.credits, 0);
-  const weightedSum = validCourses.reduce((sum, c) => sum + c.gradePoint4 * c.credits, 0);
+  const totalCredits = courses.reduce((sum, c) => sum + c.credits, 0);
+  const weightedSum = courses.reduce((sum, c) => sum + c.gradePoint4 * c.credits, 0);
   
   const gpa = Math.round((weightedSum / totalCredits) * 100) / 100;
   
