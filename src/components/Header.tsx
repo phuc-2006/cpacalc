@@ -1,4 +1,4 @@
-import { GraduationCap, Moon, Sun } from 'lucide-react';
+import { GraduationCap, Moon, Sun, ClipboardList } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import UserMenu from '@/components/UserMenu';
 import { Button } from '@/components/ui/button';
@@ -24,6 +24,15 @@ const Header = () => {
             <h1 className="text-lg font-bold tracking-tight">GPA Calculator</h1>
             <p className="text-xs text-muted-foreground">Tính điểm GPA & CPA</p>
           </div>
+          <nav className="hidden sm:flex items-center gap-1 ml-6">
+            <Link to="/" className="px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+              Tính điểm
+            </Link>
+            <Link to="/planner" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+              <ClipboardList className="h-3.5 w-3.5" />
+              Kế hoạch
+            </Link>
+          </nav>
         </div>
         <div className="flex items-center gap-2">
           <Button

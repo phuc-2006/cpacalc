@@ -1,0 +1,184 @@
+Mã HP	 
+Tên HP	 
+Kỳ học	 
+Bắt buộc	 
+TC ĐT	 
+TC học	 
+Mã HP học	 
+Ghi chú loại HP	 
+Điểm chữ	 
+Điểm số	 
+Viện/Khoa	 
+ 	 	
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Open filter row popup menu
+Collapse	Mã loại HP: 7 (Count=1, Tổng TC: 6, Tổng đạt: )
+ 	Collapse	Loại HP: Đồ án/Khóa luận Tốt nghiệp (Count=1, Tổng TC: 6, Tổng đạt: )
+ 	 	ET4900	Đồ án tốt nghiệp cử nhân	8		6			Đồ án tốt nghiệp cử nhân (6TC)	 	 	TDDT
+Collapse	Mã loại HP: 210 (Count=6, Tổng TC: 13, Tổng đạt: 7)
+ 	Collapse	Loại HP: Lý luận chính trị + Pháp luật đại cương (Count=6, Tổng TC: 13, Tổng đạt: 7)
+ 	 	SSH1111	Triết học Mác - Lênin	1		3	3	SSH1111	Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	A	4	KML
+ 	 	SSH1121	Kinh tế chính trị Mác - Lênin	2		2	2	SSH1121	Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	A	4	KML
+ 	 	SSH1131	Chủ nghĩa xã hội khoa học	3		2			Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	 	 	KML
+ 	 	SSH1141	Lịch sử Đảng cộng sản Việt Nam	4		2			Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	 	 	KML
+ 	 	SSH1151	Tư tưởng Hồ Chí Minh	4		2			Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	 	 	KML
+ 	 	EM1170	Pháp luật đại cương	2		2	2	EM1170	Lý luận chính trị + Pháp luật đại cương (Laws and politics) (13TC)	A	4	KKTVQL
+Collapse	Mã loại HP: 220 (Count=42, Tổng TC: 0, Tổng đạt: 0)
+ 	Collapse	Loại HP: Giáo dục thể chất (Count=42, Tổng TC: 0, Tổng đạt: 0)
+ 	 	PE1014	Lý luận TDTT	1		0	0	PE1014	Giáo dục thể chất	B+	3.5	BGDTC
+ 	 	PE1015	Thể dục tay không	1		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE1024	Bơi lội	2		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2101	Bóng chuyền 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2102	Bóng chuyền 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2103	Bóng chuyền 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2201	Bóng đá 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2202	Bóng đá 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2203	Bóng đá 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2301	Bóng rổ 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2302	Bóng rổ 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2303	Bóng rổ 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2401	Bóng bàn 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2402	Bóng bàn 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2403	Bóng bàn 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2501	Cầu lông 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2502	Cầu lông 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2503	Cầu lông 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2601	Chạy	3,4,410		0	0	PE2601	Giáo dục thể chất	C	2	BGDTC
+ 	 	PE2701	Nhảy cao	3,4,410		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2801	Nhảy xa	3,4,410		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2901	Xà kép, xà lệch	3,4,410		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2151	Erobic	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2251	Taekwondo 1	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2252	Taekwondo 2	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2253	Taekwondo 3	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE2261	Karatedo	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3101	Chuyên sâu Bóng chuyền 1	1		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3102	Chuyên sâu Bóng chuyền 2	2		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3103	Chuyên sâu Bóng chuyền 3	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3104	Chuyên sâu Bóng chuyền 4	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3105	Chuyên sâu Bóng chuyền 5	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3201	Chuyên sâu Bóng đá 1	1		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3202	Chuyên sâu Bóng đá 2	2		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3203	Chuyên sâu Bóng đá 3	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3204	Chuyên sâu Bóng đá 4	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3205	Chuyên sâu Bóng đá 5	5		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3301	Chuyên sâu Bóng rổ 1	1		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3302	Chuyên sâu Bóng rổ 2	2		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3303	Chuyên sâu Bóng rổ 3	3		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3304	Chuyên sâu Bóng rổ 4	4		0			Giáo dục thể chất	 	 	BGDTC
+ 	 	PE3305	Chuyên sâu Bóng rổ 5	5		0			Giáo dục thể chất	 	 	BGDTC
+Collapse	Mã loại HP: 230 (Count=4, Tổng TC: 0, Tổng đạt: 0)
+ 	Collapse	Loại HP: Giáo dục Quốc phòng - An ninh (Count=4, Tổng TC: 0, Tổng đạt: 0)
+ 	 	MIL1210	Đường lối quốc phòng và an ninh của Đảng Cộng sản Việt Nam	1		0	0	MIL1210	Giáo dục Quốc phòng - An ninh (Military Education) (4HP)	C	2	KGDQP
+ 	 	MIL1220	Công tác quốc phòng và an ninh	2		0	0	MIL1220	Giáo dục Quốc phòng - An ninh (Military Education) (4HP)	B+	3.5	KGDQP
+ 	 	MIL1230	Quân sự chung	2		0	0	MIL1230	Giáo dục Quốc phòng - An ninh (Military Education) (4HP)	B	3	KGDQP
+ 	 	MIL1240	Kỹ thuật chiến đấu bộ binh và chiến thuật	2		0	0	MIL1240	Giáo dục Quốc phòng - An ninh (Military Education) (4HP)	A	4	KGDQP
+Collapse	Mã loại HP: 241 (Count=5, Tổng TC: 0, Tổng đạt: 0)
+ 	Collapse	Loại HP: Ngoại ngữ (Count=5, Tổng TC: 0, Tổng đạt: 0)
+ 	 	FL1131	Tiếng Anh cơ sở 1	1		0	0	FL1131	Tiếng Anh (English)	R	0	KNN
+ 	 	FL1132	Tiếng Anh cơ sở 2	2		0	0	FL1132	Tiếng Anh (English)	R	0	KNN
+ 	 	FL1133	Tiếng Anh cơ sở 3	3		0	0	FL1133	Tiếng Anh (English)	R	0	KNN
+ 	 	FL1134	Tiếng Anh cơ sở 4	4		0	0	FL1134	Tiếng Anh (English)	R	0	KNN
+ 	 	FL1135	Tiếng Anh cơ sở 5	5		0	0	FL1135	Tiếng Anh (English)	R	0	KNN
+Collapse	Mã loại HP: 250 (Count=10, Tổng TC: 32, Tổng đạt: 24)
+ 	Collapse	Loại HP: Khối kiến thức Toán và Khoa học cơ bản (Count=10, Tổng TC: 32, Tổng đạt: 24)
+ 	 	MI1111	Giải tích I	1		4	4	MI1111	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	B	3	KTTD
+ 	 	MI1121	Giải tích II	2		3	3	MI1121	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	A	4	KTTD
+ 	 	MI1131	Giải tích III	3		3			Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	 	 	KTTD
+ 	 	MI1141	Đại số	1		4	4	MI1141	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	C	2	KTTD
+ 	 	MI2020	Xác suất thống kê	3		3	3	MI2020	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	A	4	KTTD
+ 	 	MI2010	Phương pháp tính	5		2			Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	 	 	KTTD
+ 	 	PH1111	Vật lý đại cương I	1		2	2	PH1111	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	A	4	VVLKT
+ 	 	PH1122	Vật lý đại cương II	2		4	4	PH1122	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	B+	3.5	VVLKT
+ 	 	PH3330	Vật lý điện tử	3		3			Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	 	 	VVLKT
+ 	 	IT1110	Tin học đại cương	2		4	4	IT1110	Toán và Khoa học cơ bản (Mathematics and basic sciences) (32TC)	B+	3.5	TCNTT
+Collapse	Mã loại HP: 300 (Count=20, Tổng TC: 49, Tổng đạt: 11)
+ 	Collapse	Loại HP: Cơ sở và cốt lõi ngành (Count=20, Tổng TC: 49, Tổng đạt: 11)
+ 	 	ET2100	Cấu trúc dữ liệu và giải thuật	4		2	2	ET2100	Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	A	4	TDDT
+ 	 	ET2000	Nhập môn kỹ thuật điện tử-viễn thông	1		2	2	ET2000	Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	A	4	TDDT
+ 	 	ET2021	Thực tập cơ bản	1		2	2	ET2021	Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	A	4	TDDT
+ 	 	ET2031	Kỹ thuật lập trình C/C++	4		2	2	ET2031	Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	A	4	TDDT
+ 	 	ET2040	Cấu kiện điện tử	4		3	3	ET2040	Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	B	3	TDDT
+ 	 	ET2050	Lý thuyết mạch	4		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET2060	Tín hiệu và hệ thống	4		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3210	Trường điện từ	4		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET2072	Lý thuyết thông tin	4		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3220	Điện tử số	5		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3230	Điện tử tương tự I	5		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3260	Kỹ thuật phần mềm ứng dụng	5		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3280	Anten và truyền sóng	5		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET2080	Cơ sở kỹ thuật đo lường	5		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3250	Thông tin số	6		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3241	Điện tử tương tự II	6		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3300	Kỹ thuật vi xử lý	6		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET3290	Đồ án thiết kế I	7		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET4010	Đồ án thiết kế II	8		2			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+ 	 	ET4020	Xử lý tín hiệu số	5		3			Cơ sở và cốt lõi ngành (Basic and Core of Engineering) (49TC)	 	 	TDDT
+Collapse	Mã loại HP: 320 (Count=9, Tổng TC: 19, Tổng đạt: 2)
+ 	Collapse	Loại HP: Khối kiến thức bổ trợ (Count=9, Tổng TC: 19, Tổng đạt: 2)
+ 	 	ET2022	Technical Writing and Presentation	6		3			Kiến thức bổ trợ (9TC)	 	 	TDDT
+ 	 	EM1010	Quản trị học đại cương	6		2			Kiến thức bổ trợ (9TC)	 	 	KKTVQL
+ 	 	EM1180	Văn hóa kinh doanh và tinh thần khởi nghiệp	7		2			Kiến thức bổ trợ (9TC)	 	 	KKTVQL
+ 	 	ED3280	Tâm lý học ứng dụng	6		2			Kiến thức bổ trợ (9TC)	 	 	KSPKT
+ 	 	ED3220	Kỹ năng mềm	6		2	2	ED3220	Kiến thức bổ trợ (9TC)	A+	4	KSPKT
+ 	 	ET3262	Tư duy công nghệ và thiết kế kỹ thuật	6		2			Kiến thức bổ trợ (9TC)	 	 	TDDT
+ 	 	CH2021	Đổi mới sáng tạo và khởi nghiệp	 		2			Kiến thức bổ trợ (9TC)	 	 	THKHSS
+ 	 	ME3123	Thiết kế mỹ thuật công nghiệp	 		2			Kiến thức bổ trợ (9TC)	 	 	TCK
+ 	 	ME3124	Thiết kế quảng bá sản phẩm	 		2			Kiến thức bổ trợ (9TC)	 	 	TCK
+Collapse	Mã loại HP: 360 (Count=1, Tổng TC: 2, Tổng đạt: )
+ 	Collapse	Loại HP: Thực tập (Count=1, Tổng TC: 2, Tổng đạt: )
+ 	 	ET3270	Thực tập kỹ thuật	8		2			Thực tập kỹ thuật (2TC)	 	 	TDDT
+Collapse	Mã loại HP: 400 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 1 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	 	ET4291	Hệ điều hành	7		3			Mô đun 1: Kỹ thuật Điện tử - Kỹ thuật máy tính (15TC)	 	 	TDDT
+ 	 	ET3310	Lý thuyết mật mã	7		3			Mô đun 1: Kỹ thuật Điện tử - Kỹ thuật máy tính (15TC)	 	 	TDDT
+ 	 	ET4250	Hệ thống viễn thông	7		3			Mô đun 1: Kỹ thuật Điện tử - Kỹ thuật máy tính (15TC)	 	 	TDDT
+ 	 	ET4230	Mạng máy tính	7		3			Mô đun 1: Kỹ thuật Điện tử - Kỹ thuật máy tính (15TC)	 	 	TDDT
+ 	 	ET4070	Cơ sở truyền số liệu	7		3			Mô đun 1: Kỹ thuật Điện tử - Kỹ thuật máy tính (15TC)	 	 	TDDT
+Collapse	Mã loại HP: 401 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 2 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	 	ET3310	Lý thuyết mật mã	7		3			Mô đun 2: Kỹ thuật Thông tin -Truyền thông (15TC)	 	 	TDDT
+ 	 	ET4250	Hệ thống viễn thông	7		3			Mô đun 2: Kỹ thuật Thông tin -Truyền thông (15TC)	 	 	TDDT
+ 	 	ET4230	Mạng máy tính	7		3			Mô đun 2: Kỹ thuật Thông tin -Truyền thông (15TC)	 	 	TDDT
+ 	 	ET4070	Cơ sở truyền số liệu	7		3			Mô đun 2: Kỹ thuật Thông tin -Truyền thông (15TC)	 	 	TDDT
+ 	 	ET3180	Thông tin vô tuyến	7		3			Mô đun 2: Kỹ thuật Thông tin -Truyền thông (15TC)	 	 	TDDT
+Collapse	Mã loại HP: 402 (Count=6, Tổng TC: 15, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 3 (Count=6, Tổng TC: 15, Tổng đạt: )
+ 	 	ET4100	Cơ sở điện sinh học	7		2			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+ 	 	ET4471	Mạch xử lý tín hiệu y sinh	7		3			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+ 	 	ET4450	Giải phẫu và sinh lý học	7		2			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+ 	 	ET4110	Cảm biến và KT đo lường y sinh	7		3			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+ 	 	ET4480	Công nghệ chẩn đoán hình ảnh I	7		3			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+ 	 	ET4120	Thiết bị điện tử y sinh I	7		2			Mô đun 3: Kỹ thuật Y sinh (15TC)	 	 	TDDT
+Collapse	Mã loại HP: 403 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 4 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	 	ET3310	Lý thuyết mật mã	7		3			Mô đun 4: Kỹ thuật Điện tử hàng không-Vũ trụ (15TC)	 	 	TDDT
+ 	 	ET4250	Hệ thống viễn thông	7		3			Mô đun 4: Kỹ thuật Điện tử hàng không-Vũ trụ (15TC)	 	 	TDDT
+ 	 	ET3180	Thông tin vô tuyến	7		3			Mô đun 4: Kỹ thuật Điện tử hàng không-Vũ trụ (15TC)	 	 	TDDT
+ 	 	ET4130	Truyền số liệu và chuyển tiếp điện văn	7		3			Mô đun 4: Kỹ thuật Điện tử hàng không-Vũ trụ (15TC)	 	 	TDDT
+ 	 	ET4140	Định vị và dẫn đường điện tử	 		3			Mô đun 4: Kỹ thuật Điện tử hàng không-Vũ trụ (15TC)	 	 	TDDT
+Collapse	Mã loại HP: 404 (Count=6, Tổng TC: 16, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 5 (Count=6, Tổng TC: 16, Tổng đạt: )
+ 	 	ET3310	Lý thuyết mật mã	7		3			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+ 	 	ET4250	Hệ thống viễn thông	7		3			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+ 	 	ET4230	Mạng máy tính	7		3			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+ 	 	ET4070	Cơ sở truyền số liệu	7		3			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+ 	 	ET4260	Đa phương tiện	 		2			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+ 	 	ET4370	Kỹ thuật truyền hình	 		2			Mô đun 5: Kỹ thuật Đa phương tiện (16TC)	 	 	TDDT
+Collapse	Mã loại HP: 405 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	Collapse	Loại HP: Mô đun 6 (Count=5, Tổng TC: 15, Tổng đạt: )
+ 	 	ET4361	Hệ thống nhúng và thiết kế giao tiếp nhúng	7		3			Mô đun 6: Thiết kế vi mạch (15TC)	 	 	TDDT
+ 	 	ET4358	Cơ sở công nghệ vi điện tử	7		3			Mô đun 6: Thiết kế vi mạch (15TC)	 	 	TDDT
+ 	 	ET4340	Thiết kế VLSI	7		3			Mô đun 6: Thiết kế vi mạch (15TC)	 	 	TDDT
+ 	 	ET4033	Thiết kế IC tương tự	7		3			Mô đun 6: Thiết kế vi mạch (15TC)	 	 	TDDT
+ 	 	ET4356	Kiểm chứng và kiểm tra vi mạch	7		3			Mô đun 6: Thiết kế vi mạch (15TC)	 	 	TDDT
+
+Điện tử-Viễn thông 2024 (CN): LLCT:13+ TKHCB:32+ CSCLN:49+ KTBT:9+ (MOD1:15|MOD2:15|MOD3:15|MOD4:15|MOD5:16|MOD6:15)+ TT:2+ ĐAKLTN:6<0.
