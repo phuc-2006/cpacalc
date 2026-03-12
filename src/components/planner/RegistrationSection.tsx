@@ -140,8 +140,8 @@ const RegistrationSection = ({
     setSelectedPreset('');
   };
 
-  // Sort semester names newest-first
-  const sortedSemesterNames = [...semesterNames].sort((a, b) => b.localeCompare(a));
+  // Sort semester names oldest-first (2025 before 2026)
+  const sortedSemesterNames = [...semesterNames].sort((a, b) => a.localeCompare(b));
 
   const addCourseToSemester = (course: CurriculumCourse) => {
     if (!activeSemester) return;
