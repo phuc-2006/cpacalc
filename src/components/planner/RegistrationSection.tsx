@@ -28,6 +28,16 @@ const RegistrationSection = ({
   const [showNewSemester, setShowNewSemester] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
   const [activeSemester, setActiveSemester] = useState<string | null>(null);
+  const [expandedSemesters, setExpandedSemesters] = useState<Set<string>>(new Set());
+
+  const toggleSemester = (name: string) => {
+    setExpandedSemesters((prev) => {
+      const next = new Set(prev);
+      if (next.has(name)) next.delete(name);
+      else next.add(name);
+      return next;
+    });
+  };
 
   // Group registrations by semester
   const semesterGroups = registrations.reduce<Record<string, RegistrationEntry[]>>(
@@ -234,54 +244,76 @@ const RegistrationSection = ({
             const courses = semesterGroups[semName];
             const semCredits = courses.reduce((sum, c) => sum + c.credits, 0);
             const isActive = activeSemester === semName;
+            const isExpanded = expandedSemesters.has(semName);
 
             return (
               <Card key={semName} className={cn('overflow-hidden', isActive && 'border-2 border-primary/30')}>
-                <button
-                  onClick={() => setActiveSemester(isActive ? null : semName)}
+                <div
                   className={cn(
                     'flex items-center justify-between w-full p-3 border-b border-border transition-colors',
-                    isActive ? 'bg-primary/5' : 'bg-muted/30 hover:bg-muted/50'
+                    isActive ? 'bg-primary/5' : 'bg-muted/30'
                   )}
                 >
-                  <div className="text-left">
-                    <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
-                      {isActive && <ArrowRight className="h-3.5 w-3.5 text-primary" />}
-                      {semName}
-                    </h3>
-                    <p className="text-xs text-muted-foreground">
-                      {courses.length} môn • {semCredits} TC
-                    </p>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                    onClick={(e) => { e.stopPropagation(); onDeleteSemester(semName); }}
+                  <button
+                    onClick={() => toggleSemester(semName)}
+                    className="flex items-center gap-1.5 text-left flex-1 min-w-0"
                   >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </Button>
-                </button>
-
-                <div className="divide-y divide-border">
-                  {courses.map((reg) => (
-                    <div key={reg.id} className="flex items-center justify-between px-3 py-2">
-                      <div className="flex items-center gap-2 min-w-0">
-                        <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{reg.courseCode}</span>
-                        <span className="text-sm text-foreground truncate">{reg.courseName}</span>
-                        <span className="text-xs text-muted-foreground shrink-0">{reg.credits}TC</span>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        className="h-6 w-6 text-muted-foreground hover:text-destructive shrink-0"
-                        onClick={() => onDeleteRegistration(reg.id)}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </Button>
+                    {isExpanded ? (
+                      <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                    ) : (
+                      <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                    )}
+                    <div>
+                      <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                        {isActive && <ArrowRight className="h-3.5 w-3.5 text-primary" />}
+                        {semName}
+                      </h3>
+                      <p className="text-xs text-muted-foreground">
+                        {courses.length} môn • {semCredits} TC
+                      </p>
                     </div>
-                  ))}
+                  </button>
+                  <div className="flex items-center gap-1 shrink-0">
+                    <Button
+                      variant={isActive ? 'default' : 'outline'}
+                      size="sm"
+                      className="h-7 text-xs"
+                      onClick={() => setActiveSemester(isActive ? null : semName)}
+                    >
+                      {isActive ? 'Đang chọn' : 'Chọn'}
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      className="h-7 w-7 text-muted-foreground hover:text-destructive"
+                      onClick={() => onDeleteSemester(semName)}
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </Button>
+                  </div>
                 </div>
+
+                {isExpanded && (
+                  <div className="divide-y divide-border">
+                    {courses.map((reg) => (
+                      <div key={reg.id} className="flex items-center justify-between px-3 py-2">
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{reg.courseCode}</span>
+                          <span className="text-sm text-foreground truncate">{reg.courseName}</span>
+                          <span className="text-xs text-muted-foreground shrink-0">{reg.credits}TC</span>
+                        </div>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-6 w-6 text-muted-foreground hover:text-destructive shrink-0"
+                          onClick={() => onDeleteRegistration(reg.id)}
+                        >
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </Card>
             );
           })}
