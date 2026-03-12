@@ -371,6 +371,7 @@ const CoursePlanner = () => {
                 <RegistrationSection
                   registrations={registrations}
                   allCategories={categories}
+                  selectedModule={selectedModule}
                   passedCodes={allPassedCodes}
                   failedCodes={failedCodes}
                   onAddRegistration={addRegistration}

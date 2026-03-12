@@ -2,12 +2,13 @@ import { useState } from 'react';
 import { Plus, Trash2, CalendarPlus, ChevronDown, ChevronRight, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { RegistrationEntry, CurriculumCourse, CurriculumCategory } from '@/types/curriculum';
+import { RegistrationEntry, CurriculumCourse, CurriculumCategory, Module } from '@/types/curriculum';
 import { cn } from '@/lib/utils';
 
 interface RegistrationSectionProps {
   registrations: RegistrationEntry[];
   allCategories: CurriculumCategory[];
+  selectedModule: Module | null;
   passedCodes: Set<string>;
   failedCodes: Set<string>;
   onAddRegistration: (semesterName: string, courseCode: string, courseName: string, credits: number) => void;
@@ -15,9 +16,67 @@ interface RegistrationSectionProps {
   onDeleteSemester: (semesterName: string) => void;
 }
 
+// Reusable course row
+const CourseRow = ({
+  course,
+  isPassed,
+  isFailed,
+  isRegistered,
+  canAdd,
+  onAdd,
+}: {
+  course: CurriculumCourse;
+  isPassed: boolean;
+  isFailed: boolean;
+  isRegistered: boolean;
+  canAdd: boolean;
+  onAdd: () => void;
+}) => (
+  <div
+    className={cn(
+      'flex items-center justify-between px-4 py-2 pl-10 group transition-colors',
+      isPassed && 'bg-emerald-500/5',
+      isFailed && 'bg-red-500/5',
+      isRegistered && !isPassed && 'bg-blue-500/5',
+    )}
+  >
+    <div className="flex items-center gap-2 min-w-0 flex-1">
+      <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{course.code}</span>
+      <span className="text-sm text-foreground truncate">{course.name}</span>
+      <span className="text-xs text-muted-foreground shrink-0">{course.credits}TC</span>
+    </div>
+    <div className="flex items-center gap-1.5 shrink-0 ml-2">
+      {isPassed && (
+        <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+          <CheckCircle2 className="h-3 w-3" /> Đạt
+        </span>
+      )}
+      {isFailed && (
+        <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-red-600 dark:text-red-400">
+          <XCircle className="h-3 w-3" /> Trượt
+        </span>
+      )}
+      {isRegistered && !isPassed && (
+        <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Đã ĐK</span>
+      )}
+      {canAdd && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary"
+          onClick={onAdd}
+        >
+          <Plus className="h-3.5 w-3.5" />
+        </Button>
+      )}
+    </div>
+  </div>
+);
+
 const RegistrationSection = ({
   registrations,
   allCategories,
+  selectedModule,
   passedCodes,
   failedCodes,
   onAddRegistration,
@@ -39,6 +98,15 @@ const RegistrationSection = ({
     });
   };
 
+  const toggleCat = (id: string) => {
+    setExpandedCats((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  };
+
   // Group registrations by semester
   const semesterGroups = registrations.reduce<Record<string, RegistrationEntry[]>>(
     (acc, reg) => {
@@ -51,8 +119,6 @@ const RegistrationSection = ({
   const semesterNames = Object.keys(semesterGroups);
   const registeredCodes = new Set(registrations.map((r) => r.courseCode));
   const totalRegisteredCredits = registrations.reduce((sum, r) => sum + r.credits, 0);
-
-  // Only show credit-bearing categories in course picker
   const creditCategories = allCategories.filter((c) => !c.isZeroCredit);
 
   const handleAddSemester = () => {
@@ -63,19 +129,30 @@ const RegistrationSection = ({
     setActiveSemester(name);
   };
 
-  const toggleCat = (id: string) => {
-    setExpandedCats((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
   const addCourseToSemester = (course: CurriculumCourse) => {
     if (!activeSemester) return;
     onAddRegistration(activeSemester, course.code, course.name, course.credits);
   };
+
+  const renderCourseList = (courses: CurriculumCourse[]) =>
+    courses.map((course) => {
+      const isPassed = passedCodes.has(course.code);
+      const isFailed = failedCodes.has(course.code) && !isPassed;
+      const isRegistered = registeredCodes.has(course.code);
+      const canAdd = !!activeSemester && !isRegistered && !isPassed;
+
+      return (
+        <CourseRow
+          key={course.code + course.name}
+          course={course}
+          isPassed={isPassed}
+          isFailed={isFailed}
+          isRegistered={isRegistered}
+          canAdd={canAdd}
+          onAdd={() => addCourseToSemester(course)}
+        />
+      );
+    });
 
   return (
     <div className="space-y-4">
@@ -86,12 +163,7 @@ const RegistrationSection = ({
             Tổng: <span className="font-semibold text-blue-600 dark:text-blue-400">{totalRegisteredCredits} TC</span> đăng ký
           </p>
         </div>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => setShowNewSemester(true)}
-          className="gap-1.5"
-        >
+        <Button variant="outline" size="sm" onClick={() => setShowNewSemester(true)} className="gap-1.5">
           <CalendarPlus className="h-4 w-4" />
           Thêm kỳ
         </Button>
@@ -132,6 +204,7 @@ const RegistrationSection = ({
             </p>
           </div>
           <div className="max-h-[600px] overflow-y-auto">
+            {/* Credit categories */}
             {creditCategories.map((cat) => {
               const isExpanded = expandedCats.has(cat.id);
               return (
@@ -148,70 +221,33 @@ const RegistrationSection = ({
                   </button>
                   {isExpanded && (
                     <div className="divide-y divide-border/50">
-                      {cat.courses.map((course) => {
-                        const isPassed = passedCodes.has(course.code);
-                        const isFailed = failedCodes.has(course.code) && !isPassed;
-                        const isRegistered = registeredCodes.has(course.code);
-                        const canAdd = activeSemester && !isRegistered && !isPassed;
-
-                        return (
-                          <div
-                            key={course.code + course.name}
-                            className={cn(
-                              'flex items-center justify-between px-4 py-2 pl-10 group transition-colors',
-                              isPassed && 'bg-emerald-500/5',
-                              isFailed && 'bg-red-500/5',
-                              isRegistered && !isPassed && 'bg-blue-500/5',
-                            )}
-                          >
-                            <div className="flex items-center gap-2 min-w-0 flex-1">
-                              <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{course.code}</span>
-                              <span className="text-sm text-foreground truncate">{course.name}</span>
-                              <span className="text-xs text-muted-foreground shrink-0">{course.credits}TC</span>
-                            </div>
-                            <div className="flex items-center gap-1.5 shrink-0 ml-2">
-                              {isPassed && (
-                                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
-                                  <CheckCircle2 className="h-3 w-3" /> Đạt
-                                </span>
-                              )}
-                              {isFailed && (
-                                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-red-600 dark:text-red-400">
-                                  <XCircle className="h-3 w-3" /> Trượt
-                                </span>
-                              )}
-                              {isRegistered && !isPassed && (
-                                <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Đã ĐK</span>
-                              )}
-                              {canAdd && (
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary"
-                                  onClick={() => addCourseToSemester(course)}
-                                >
-                                  <Plus className="h-3.5 w-3.5" />
-                                </Button>
-                              )}
-                              {isFailed && canAdd && (
-                                <Button
-                                  variant="ghost"
-                                  size="icon"
-                                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary"
-                                  onClick={() => addCourseToSemester(course)}
-                                >
-                                  <Plus className="h-3.5 w-3.5" />
-                                </Button>
-                              )}
-                            </div>
-                          </div>
-                        );
-                      })}
+                      {renderCourseList(cat.courses)}
                     </div>
                   )}
                 </div>
               );
             })}
+
+            {/* Module courses */}
+            {selectedModule && (
+              <div className="border-t-2 border-primary/20">
+                <button
+                  onClick={() => toggleCat('__module__')}
+                  className="flex items-center justify-between w-full px-4 py-2.5 hover:bg-muted/50 transition-colors text-left bg-primary/5"
+                >
+                  <div className="flex items-center gap-2">
+                    {expandedCats.has('__module__') ? <ChevronDown className="h-4 w-4 text-primary" /> : <ChevronRight className="h-4 w-4 text-primary" />}
+                    <span className="text-sm font-medium text-primary">{selectedModule.name}</span>
+                  </div>
+                  <span className="text-xs text-primary">{selectedModule.requiredCredits} TC</span>
+                </button>
+                {expandedCats.has('__module__') && (
+                  <div className="divide-y divide-border/50">
+                    {renderCourseList(selectedModule.courses)}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
         </Card>
 
@@ -225,21 +261,20 @@ const RegistrationSection = ({
             </Card>
           )}
 
-          {/* Show empty new semester if it has no courses yet */}
+          {/* Empty new semester */}
           {activeSemester && !semesterNames.includes(activeSemester) && (
-            <Card className={cn('overflow-hidden border-2 border-primary/30')}>
+            <Card className="overflow-hidden border-2 border-primary/30">
               <div className="flex items-center justify-between p-3 bg-primary/5 border-b border-border">
-                <div>
-                  <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
-                    <ArrowRight className="h-3.5 w-3.5 text-primary" />
-                    {activeSemester}
-                  </h3>
-                  <p className="text-xs text-muted-foreground">Chọn môn từ bảng bên trái</p>
-                </div>
+                <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                  <ArrowRight className="h-3.5 w-3.5 text-primary" />
+                  {activeSemester}
+                </h3>
+                <p className="text-xs text-muted-foreground">Chọn môn từ bảng bên trái</p>
               </div>
             </Card>
           )}
 
+          {/* Semester cards */}
           {semesterNames.map((semName) => {
             const courses = semesterGroups[semName];
             const semCredits = courses.reduce((sum, c) => sum + c.credits, 0);
@@ -258,11 +293,10 @@ const RegistrationSection = ({
                     onClick={() => toggleSemester(semName)}
                     className="flex items-center gap-1.5 text-left flex-1 min-w-0"
                   >
-                    {isExpanded ? (
-                      <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
-                    ) : (
-                      <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
-                    )}
+                    {isExpanded
+                      ? <ChevronDown className="h-4 w-4 text-muted-foreground shrink-0" />
+                      : <ChevronRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                    }
                     <div>
                       <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
                         {isActive && <ArrowRight className="h-3.5 w-3.5 text-primary" />}
