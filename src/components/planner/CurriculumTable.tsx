@@ -1,20 +1,18 @@
-import { CheckCircle2, Circle, BookOpen } from 'lucide-react';
+import { CheckCircle2, XCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { CurriculumCourse } from '@/types/curriculum';
 
 interface CurriculumTableProps {
   courses: CurriculumCourse[];
   passedCodes: Set<string>;
-  registeredCodes: Set<string>;
-  onToggleRegister: (code: string) => void;
+  failedCodes: Set<string>;
   isZeroCredit?: boolean;
 }
 
 const CurriculumTable = ({
   courses,
   passedCodes,
-  registeredCodes,
-  onToggleRegister,
+  failedCodes,
   isZeroCredit,
 }: CurriculumTableProps) => {
   return (
@@ -22,9 +20,6 @@ const CurriculumTable = ({
       <table className="w-full">
         <thead>
           <tr className="border-b border-border bg-muted/30">
-            <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider w-10">
-              Đăng ký
-            </th>
             <th className="px-4 py-2.5 text-left text-xs font-medium text-muted-foreground uppercase tracking-wider">
               Mã HP
             </th>
@@ -47,7 +42,7 @@ const CurriculumTable = ({
         <tbody className="divide-y divide-border">
           {courses.map((course) => {
             const isPassed = passedCodes.has(course.code);
-            const isRegistered = registeredCodes.has(course.code);
+            const isFailed = failedCodes.has(course.code);
 
             return (
               <tr
@@ -55,25 +50,9 @@ const CurriculumTable = ({
                 className={cn(
                   'transition-colors',
                   isPassed && 'bg-emerald-500/5',
-                  isRegistered && !isPassed && 'bg-blue-500/5'
+                  isFailed && 'bg-red-500/5'
                 )}
               >
-                <td className="px-4 py-2.5 text-center">
-                  {isPassed ? (
-                    <CheckCircle2 className="h-4 w-4 text-emerald-500 mx-auto" />
-                  ) : (
-                    <button
-                      onClick={() => onToggleRegister(course.code)}
-                      className="mx-auto block"
-                    >
-                      {isRegistered ? (
-                        <CheckCircle2 className="h-4 w-4 text-blue-500" />
-                      ) : (
-                        <Circle className="h-4 w-4 text-muted-foreground/40 hover:text-blue-400 transition-colors" />
-                      )}
-                    </button>
-                  )}
-                </td>
                 <td className="px-4 py-2.5 text-sm font-mono text-muted-foreground">
                   {course.code}
                 </td>
@@ -94,10 +73,10 @@ const CurriculumTable = ({
                       <CheckCircle2 className="h-3 w-3" />
                       Đã đạt
                     </span>
-                  ) : isRegistered ? (
-                    <span className="inline-flex items-center gap-1 rounded-full bg-blue-500/10 px-2.5 py-0.5 text-xs font-medium text-blue-600 dark:text-blue-400">
-                      <BookOpen className="h-3 w-3" />
-                      Dự trù
+                  ) : isFailed ? (
+                    <span className="inline-flex items-center gap-1 rounded-full bg-red-500/10 px-2.5 py-0.5 text-xs font-medium text-red-600 dark:text-red-400">
+                      <XCircle className="h-3 w-3" />
+                      Trượt
                     </span>
                   ) : (
                     <span className="text-xs text-muted-foreground/50">Chưa học</span>

@@ -118,6 +118,84 @@ export type Database = {
         }
         Relationships: []
       }
+      planner_state: {
+        Row: {
+          id: string
+          user_id: string
+          selected_module: string | null
+          curriculum_imported: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          selected_module?: string | null
+          curriculum_imported?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          selected_module?: string | null
+          curriculum_imported?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      planner_registrations: {
+        Row: {
+          id: string
+          user_id: string
+          semester_name: string
+          course_code: string
+          course_name: string
+          credits: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          semester_name: string
+          course_code: string
+          course_name: string
+          credits?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          semester_name?: string
+          course_code?: string
+          course_name?: string
+          credits?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
+      planner_manual_passed: {
+        Row: {
+          id: string
+          user_id: string
+          course_code: string
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          course_code: string
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          course_code?: string
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

@@ -12,7 +12,7 @@ export interface CurriculumCategory {
   name: string;
   requiredCredits: number;
   courses: CurriculumCourse[];
-  isZeroCredit?: boolean; // For PE, Military, English
+  isZeroCredit?: boolean;
 }
 
 export interface Module {
@@ -29,7 +29,15 @@ export interface GraduationRequirement {
   passed: boolean;
 }
 
+export interface RegistrationEntry {
+  id: string;
+  semesterName: string;
+  courseCode: string;
+  courseName: string;
+  credits: number;
+}
+
 export interface PlannerState {
   selectedModule: string | null;
-  registeredCourses: string[]; // course codes
+  curriculumImported: boolean;
 }
