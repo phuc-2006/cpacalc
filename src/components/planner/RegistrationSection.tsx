@@ -1,13 +1,15 @@
 import { useState } from 'react';
-import { Plus, Trash2, CalendarPlus } from 'lucide-react';
+import { Plus, Trash2, CalendarPlus, ChevronDown, ChevronRight, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { RegistrationEntry, CurriculumCourse } from '@/types/curriculum';
+import { RegistrationEntry, CurriculumCourse, CurriculumCategory } from '@/types/curriculum';
 import { cn } from '@/lib/utils';
 
 interface RegistrationSectionProps {
   registrations: RegistrationEntry[];
-  availableCourses: CurriculumCourse[]; // courses not yet passed
+  allCategories: CurriculumCategory[];
+  passedCodes: Set<string>;
+  failedCodes: Set<string>;
   onAddRegistration: (semesterName: string, courseCode: string, courseName: string, credits: number) => void;
   onDeleteRegistration: (id: string) => void;
   onDeleteSemester: (semesterName: string) => void;
@@ -15,15 +17,17 @@ interface RegistrationSectionProps {
 
 const RegistrationSection = ({
   registrations,
-  availableCourses,
+  allCategories,
+  passedCodes,
+  failedCodes,
   onAddRegistration,
   onDeleteRegistration,
   onDeleteSemester,
 }: RegistrationSectionProps) => {
   const [newSemesterName, setNewSemesterName] = useState('');
   const [showNewSemester, setShowNewSemester] = useState(false);
-  const [addingToSemester, setAddingToSemester] = useState<string | null>(null);
-  const [selectedCourseCode, setSelectedCourseCode] = useState('');
+  const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
+  const [activeSemester, setActiveSemester] = useState<string | null>(null);
 
   // Group registrations by semester
   const semesterGroups = registrations.reduce<Record<string, RegistrationEntry[]>>(
@@ -34,31 +38,34 @@ const RegistrationSection = ({
     },
     {}
   );
-
   const semesterNames = Object.keys(semesterGroups);
-
-  // Filter out already registered courses
   const registeredCodes = new Set(registrations.map((r) => r.courseCode));
-  const filteredAvailable = availableCourses.filter(
-    (c) => !registeredCodes.has(c.code) && c.credits > 0
-  );
+  const totalRegisteredCredits = registrations.reduce((sum, r) => sum + r.credits, 0);
+
+  // Only show credit-bearing categories in course picker
+  const creditCategories = allCategories.filter((c) => !c.isZeroCredit);
 
   const handleAddSemester = () => {
     if (!newSemesterName.trim()) return;
+    const name = newSemesterName.trim();
     setShowNewSemester(false);
     setNewSemesterName('');
-    // Just create the semester name; user adds courses to it
-    setAddingToSemester(newSemesterName.trim());
+    setActiveSemester(name);
   };
 
-  const handleAddCourse = (semesterName: string) => {
-    const course = filteredAvailable.find((c) => c.code === selectedCourseCode);
-    if (!course) return;
-    onAddRegistration(semesterName, course.code, course.name, course.credits);
-    setSelectedCourseCode('');
+  const toggleCat = (id: string) => {
+    setExpandedCats((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   };
 
-  const totalRegisteredCredits = registrations.reduce((sum, r) => sum + r.credits, 0);
+  const addCourseToSemester = (course: CurriculumCourse) => {
+    if (!activeSemester) return;
+    onAddRegistration(activeSemester, course.code, course.name, course.credits);
+  };
 
   return (
     <div className="space-y-4">
@@ -91,173 +98,195 @@ const RegistrationSection = ({
               placeholder="Tên kỳ (VD: 20252, Hè 2026...)"
               className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
               onKeyDown={(e) => e.key === 'Enter' && handleAddSemester()}
+              autoFocus
             />
-            <Button size="sm" onClick={handleAddSemester}>
-              Tạo
-            </Button>
-            <Button
-              size="sm"
-              variant="ghost"
-              onClick={() => {
-                setShowNewSemester(false);
-                setNewSemesterName('');
-              }}
-            >
+            <Button size="sm" onClick={handleAddSemester}>Tạo</Button>
+            <Button size="sm" variant="ghost" onClick={() => { setShowNewSemester(false); setNewSemesterName(''); }}>
               Hủy
             </Button>
           </div>
         </Card>
       )}
 
-      {/* Semester cards */}
-      {semesterNames.length === 0 && !showNewSemester && (
-        <div className="rounded-2xl border-2 border-dashed border-border p-8 text-center">
-          <CalendarPlus className="h-10 w-10 mx-auto mb-3 text-muted-foreground/30" />
-          <p className="text-muted-foreground">Chưa có kỳ đăng ký nào</p>
-          <p className="text-sm text-muted-foreground/60">Nhấn "Thêm kỳ" để bắt đầu</p>
-        </div>
-      )}
+      {/* 2-panel layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        {/* ── Left Panel: Course list by category ── */}
+        <Card className="overflow-hidden">
+          <div className="p-4 bg-muted/30 border-b border-border">
+            <h3 className="font-semibold text-foreground text-sm">Danh sách môn học</h3>
+            <p className="text-xs text-muted-foreground">
+              {activeSemester
+                ? <>Chọn môn để thêm vào <span className="font-semibold text-primary">{activeSemester}</span></>
+                : 'Tạo kỳ học trước để đăng ký'
+              }
+            </p>
+          </div>
+          <div className="max-h-[600px] overflow-y-auto">
+            {creditCategories.map((cat) => {
+              const isExpanded = expandedCats.has(cat.id);
+              return (
+                <div key={cat.id} className="border-b border-border last:border-b-0">
+                  <button
+                    onClick={() => toggleCat(cat.id)}
+                    className="flex items-center justify-between w-full px-4 py-2.5 hover:bg-muted/50 transition-colors text-left"
+                  >
+                    <div className="flex items-center gap-2">
+                      {isExpanded ? <ChevronDown className="h-4 w-4 text-muted-foreground" /> : <ChevronRight className="h-4 w-4 text-muted-foreground" />}
+                      <span className="text-sm font-medium text-foreground">{cat.name}</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{cat.requiredCredits} TC</span>
+                  </button>
+                  {isExpanded && (
+                    <div className="divide-y divide-border/50">
+                      {cat.courses.map((course) => {
+                        const isPassed = passedCodes.has(course.code);
+                        const isFailed = failedCodes.has(course.code) && !isPassed;
+                        const isRegistered = registeredCodes.has(course.code);
+                        const canAdd = activeSemester && !isRegistered && !isPassed;
 
-      {semesterNames.map((semName) => {
-        const courses = semesterGroups[semName];
-        const semCredits = courses.reduce((sum, c) => sum + c.credits, 0);
-        const isAdding = addingToSemester === semName;
+                        return (
+                          <div
+                            key={course.code + course.name}
+                            className={cn(
+                              'flex items-center justify-between px-4 py-2 pl-10 group transition-colors',
+                              isPassed && 'bg-emerald-500/5',
+                              isFailed && 'bg-red-500/5',
+                              isRegistered && !isPassed && 'bg-blue-500/5',
+                            )}
+                          >
+                            <div className="flex items-center gap-2 min-w-0 flex-1">
+                              <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{course.code}</span>
+                              <span className="text-sm text-foreground truncate">{course.name}</span>
+                              <span className="text-xs text-muted-foreground shrink-0">{course.credits}TC</span>
+                            </div>
+                            <div className="flex items-center gap-1.5 shrink-0 ml-2">
+                              {isPassed && (
+                                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-emerald-600 dark:text-emerald-400">
+                                  <CheckCircle2 className="h-3 w-3" /> Đạt
+                                </span>
+                              )}
+                              {isFailed && (
+                                <span className="inline-flex items-center gap-0.5 text-[10px] font-medium text-red-600 dark:text-red-400">
+                                  <XCircle className="h-3 w-3" /> Trượt
+                                </span>
+                              )}
+                              {isRegistered && !isPassed && (
+                                <span className="text-[10px] font-medium text-blue-600 dark:text-blue-400">Đã ĐK</span>
+                              )}
+                              {canAdd && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary"
+                                  onClick={() => addCourseToSemester(course)}
+                                >
+                                  <Plus className="h-3.5 w-3.5" />
+                                </Button>
+                              )}
+                              {isFailed && canAdd && (
+                                <Button
+                                  variant="ghost"
+                                  size="icon"
+                                  className="h-6 w-6 opacity-0 group-hover:opacity-100 transition-opacity text-primary hover:text-primary"
+                                  onClick={() => addCourseToSemester(course)}
+                                >
+                                  <Plus className="h-3.5 w-3.5" />
+                                </Button>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </Card>
 
-        return (
-          <Card key={semName} className="overflow-hidden">
-            <div className="flex items-center justify-between p-4 bg-muted/30 border-b border-border">
-              <div>
-                <h3 className="font-semibold text-foreground">{semName}</h3>
-                <p className="text-xs text-muted-foreground">
-                  {courses.length} môn • {semCredits} TC
-                </p>
+        {/* ── Right Panel: Semesters ── */}
+        <div className="space-y-3">
+          {semesterNames.length === 0 && !activeSemester && (
+            <Card className="p-8 text-center">
+              <CalendarPlus className="h-10 w-10 mx-auto mb-3 text-muted-foreground/30" />
+              <p className="text-muted-foreground">Chưa có kỳ đăng ký nào</p>
+              <p className="text-sm text-muted-foreground/60">Nhấn "Thêm kỳ" để bắt đầu</p>
+            </Card>
+          )}
+
+          {/* Show empty new semester if it has no courses yet */}
+          {activeSemester && !semesterNames.includes(activeSemester) && (
+            <Card className={cn('overflow-hidden border-2 border-primary/30')}>
+              <div className="flex items-center justify-between p-3 bg-primary/5 border-b border-border">
+                <div>
+                  <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                    <ArrowRight className="h-3.5 w-3.5 text-primary" />
+                    {activeSemester}
+                  </h3>
+                  <p className="text-xs text-muted-foreground">Chọn môn từ bảng bên trái</p>
+                </div>
               </div>
-              <div className="flex gap-1">
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="h-8 w-8 text-muted-foreground hover:text-destructive"
-                  onClick={() => onDeleteSemester(semName)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
+            </Card>
+          )}
 
-            {/* Course list */}
-            <div className="divide-y divide-border">
-              {courses.map((reg) => (
-                <div
-                  key={reg.id}
-                  className="flex items-center justify-between px-4 py-2.5"
+          {semesterNames.map((semName) => {
+            const courses = semesterGroups[semName];
+            const semCredits = courses.reduce((sum, c) => sum + c.credits, 0);
+            const isActive = activeSemester === semName;
+
+            return (
+              <Card key={semName} className={cn('overflow-hidden', isActive && 'border-2 border-primary/30')}>
+                <button
+                  onClick={() => setActiveSemester(isActive ? null : semName)}
+                  className={cn(
+                    'flex items-center justify-between w-full p-3 border-b border-border transition-colors',
+                    isActive ? 'bg-primary/5' : 'bg-muted/30 hover:bg-muted/50'
+                  )}
                 >
-                  <div className="flex items-center gap-3">
-                    <span className="text-xs font-mono text-muted-foreground w-16">
-                      {reg.courseCode}
-                    </span>
-                    <span className="text-sm text-foreground">{reg.courseName}</span>
-                    <span className="text-xs text-muted-foreground">{reg.credits} TC</span>
+                  <div className="text-left">
+                    <h3 className="font-semibold text-foreground text-sm flex items-center gap-1.5">
+                      {isActive && <ArrowRight className="h-3.5 w-3.5 text-primary" />}
+                      {semName}
+                    </h3>
+                    <p className="text-xs text-muted-foreground">
+                      {courses.length} môn • {semCredits} TC
+                    </p>
                   </div>
                   <Button
                     variant="ghost"
                     size="icon"
                     className="h-7 w-7 text-muted-foreground hover:text-destructive"
-                    onClick={() => onDeleteRegistration(reg.id)}
+                    onClick={(e) => { e.stopPropagation(); onDeleteSemester(semName); }}
                   >
                     <Trash2 className="h-3.5 w-3.5" />
                   </Button>
-                </div>
-              ))}
-            </div>
+                </button>
 
-            {/* Add course to semester */}
-            <div className="p-3 border-t border-border bg-muted/10">
-              {isAdding ? (
-                <div className="flex gap-2">
-                  <select
-                    value={selectedCourseCode}
-                    onChange={(e) => setSelectedCourseCode(e.target.value)}
-                    className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-                  >
-                    <option value="">Chọn môn học...</option>
-                    {filteredAvailable.map((c) => (
-                      <option key={c.code} value={c.code}>
-                        {c.code} - {c.name} ({c.credits} TC)
-                      </option>
-                    ))}
-                  </select>
-                  <Button
-                    size="sm"
-                    onClick={() => handleAddCourse(semName)}
-                    disabled={!selectedCourseCode}
-                  >
-                    Thêm
-                  </Button>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => setAddingToSemester(null)}
-                  >
-                    Đóng
-                  </Button>
+                <div className="divide-y divide-border">
+                  {courses.map((reg) => (
+                    <div key={reg.id} className="flex items-center justify-between px-3 py-2">
+                      <div className="flex items-center gap-2 min-w-0">
+                        <span className="text-xs font-mono text-muted-foreground w-14 shrink-0">{reg.courseCode}</span>
+                        <span className="text-sm text-foreground truncate">{reg.courseName}</span>
+                        <span className="text-xs text-muted-foreground shrink-0">{reg.credits}TC</span>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="h-6 w-6 text-muted-foreground hover:text-destructive shrink-0"
+                        onClick={() => onDeleteRegistration(reg.id)}
+                      >
+                        <Trash2 className="h-3 w-3" />
+                      </Button>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="w-full border-dashed gap-1"
-                  onClick={() => setAddingToSemester(semName)}
-                >
-                  <Plus className="h-3.5 w-3.5" />
-                  Thêm môn
-                </Button>
-              )}
-            </div>
-          </Card>
-        );
-      })}
-
-      {/* Quick add to new semester that was just created but has no courses yet */}
-      {addingToSemester && !semesterNames.includes(addingToSemester) && (
-        <Card className="overflow-hidden">
-          <div className="flex items-center justify-between p-4 bg-muted/30 border-b border-border">
-            <div>
-              <h3 className="font-semibold text-foreground">{addingToSemester}</h3>
-              <p className="text-xs text-muted-foreground">Kỳ mới • 0 môn</p>
-            </div>
-          </div>
-          <div className="p-3 border-t border-border bg-muted/10">
-            <div className="flex gap-2">
-              <select
-                value={selectedCourseCode}
-                onChange={(e) => setSelectedCourseCode(e.target.value)}
-                className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              >
-                <option value="">Chọn môn học...</option>
-                {filteredAvailable.map((c) => (
-                  <option key={c.code} value={c.code}>
-                    {c.code} - {c.name} ({c.credits} TC)
-                  </option>
-                ))}
-              </select>
-              <Button
-                size="sm"
-                onClick={() => handleAddCourse(addingToSemester)}
-                disabled={!selectedCourseCode}
-              >
-                Thêm
-              </Button>
-              <Button
-                size="sm"
-                variant="ghost"
-                onClick={() => setAddingToSemester(null)}
-              >
-                Đóng
-              </Button>
-            </div>
-          </div>
-        </Card>
-      )}
+              </Card>
+            );
+          })}
+        </div>
+      </div>
     </div>
   );
 };

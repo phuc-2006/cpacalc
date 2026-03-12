@@ -370,7 +370,9 @@ const CoursePlanner = () => {
                 {/* ── Registration Section ── */}
                 <RegistrationSection
                   registrations={registrations}
-                  availableCourses={availableCourses}
+                  allCategories={categories}
+                  passedCodes={allPassedCodes}
+                  failedCodes={failedCodes}
                   onAddRegistration={addRegistration}
                   onDeleteRegistration={deleteRegistration}
                   onDeleteSemester={deleteRegistrationsBySemester}
