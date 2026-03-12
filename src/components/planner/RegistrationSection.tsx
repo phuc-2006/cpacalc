@@ -83,7 +83,7 @@ const RegistrationSection = ({
   onDeleteRegistration,
   onDeleteSemester,
 }: RegistrationSectionProps) => {
-  const [newSemesterName, setNewSemesterName] = useState('');
+  const [selectedPreset, setSelectedPreset] = useState('');
   const [showNewSemester, setShowNewSemester] = useState(false);
   const [expandedCats, setExpandedCats] = useState<Set<string>>(new Set());
   const [activeSemester, setActiveSemester] = useState<string | null>(null);
@@ -121,13 +121,27 @@ const RegistrationSection = ({
   const totalRegisteredCredits = registrations.reduce((sum, r) => sum + r.credits, 0);
   const creditCategories = allCategories.filter((c) => !c.isZeroCredit);
 
+  // Generate preset semester options: 2024.1 -> 2030.3
+  const presetSemesters: { value: string; label: string }[] = [];
+  for (let year = 2024; year <= 2030; year++) {
+    presetSemesters.push({ value: `${year}.1`, label: `${year}.1 — Kỳ 1` });
+    presetSemesters.push({ value: `${year}.2`, label: `${year}.2 — Kỳ 2` });
+    presetSemesters.push({ value: `${year}.3`, label: `${year}.3 — Kỳ hè` });
+  }
+
+  const existingSemesterSet = new Set(semesterNames);
+  const availableSemesters = presetSemesters.filter((s) => !existingSemesterSet.has(s.value));
+
   const handleAddSemester = () => {
-    if (!newSemesterName.trim()) return;
-    const name = newSemesterName.trim();
+    if (!selectedPreset) return;
     setShowNewSemester(false);
-    setNewSemesterName('');
-    setActiveSemester(name);
+    setActiveSemester(selectedPreset);
+    setExpandedSemesters((prev) => new Set(prev).add(selectedPreset));
+    setSelectedPreset('');
   };
+
+  // Sort semester names newest-first
+  const sortedSemesterNames = [...semesterNames].sort((a, b) => b.localeCompare(a));
 
   const addCourseToSemester = (course: CurriculumCourse) => {
     if (!activeSemester) return;
@@ -169,21 +183,21 @@ const RegistrationSection = ({
         </Button>
       </div>
 
-      {/* New semester form */}
       {showNewSemester && (
         <Card className="p-4">
           <div className="flex gap-2">
-            <input
-              type="text"
-              value={newSemesterName}
-              onChange={(e) => setNewSemesterName(e.target.value)}
-              placeholder="Tên kỳ (VD: 20252, Hè 2026...)"
+            <select
+              value={selectedPreset}
+              onChange={(e) => setSelectedPreset(e.target.value)}
               className="flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary/50"
-              onKeyDown={(e) => e.key === 'Enter' && handleAddSemester()}
-              autoFocus
-            />
-            <Button size="sm" onClick={handleAddSemester}>Tạo</Button>
-            <Button size="sm" variant="ghost" onClick={() => { setShowNewSemester(false); setNewSemesterName(''); }}>
+            >
+              <option value="">Chọn kỳ học...</option>
+              {availableSemesters.map((s) => (
+                <option key={s.value} value={s.value}>{s.label}</option>
+              ))}
+            </select>
+            <Button size="sm" onClick={handleAddSemester} disabled={!selectedPreset}>Thêm</Button>
+            <Button size="sm" variant="ghost" onClick={() => { setShowNewSemester(false); setSelectedPreset(''); }}>
               Hủy
             </Button>
           </div>
@@ -274,8 +288,8 @@ const RegistrationSection = ({
             </Card>
           )}
 
-          {/* Semester cards */}
-          {semesterNames.map((semName) => {
+          {/* Semester cards — sorted newest first */}
+          {sortedSemesterNames.map((semName) => {
             const courses = semesterGroups[semName];
             const semCredits = courses.reduce((sum, c) => sum + c.credits, 0);
             const isActive = activeSemester === semName;
