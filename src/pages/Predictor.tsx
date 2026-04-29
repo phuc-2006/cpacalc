@@ -1,4 +1,4 @@
-import { Calculator, BookOpen, Download, Info, Search } from 'lucide-react';
+import { Calculator, BookOpen, Download, Info, Search, ListPlus } from 'lucide-react';
 import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
 import PredictorSemesterCard from '@/components/predictor/PredictorSemesterCard';
@@ -7,6 +7,7 @@ import { useSemestersCloud } from '@/hooks/useSemestersCloud';
 import { usePlannerCloud } from '@/hooks/usePlannerCloud';
 import { usePredictor } from '@/hooks/usePredictor';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
 
 const Predictor = () => {
@@ -33,13 +34,46 @@ const Predictor = () => {
     toast.success('Đã tải lại dữ liệu từ Trang chủ');
   };
 
-  const handleAddPlanned = () => {
+  const handleAddPlanned = (semesterName: string) => {
     if (plannerLoading) return;
-    addPlannedSemesters(registrations);
-    toast.success('Đã thêm các môn trong kế hoạch');
+    const targetedRegistrations = registrations.filter(r => r.semesterName === semesterName);
+    addPlannedSemesters(targetedRegistrations);
+    toast.success(`Đã thêm ${semesterName} từ kế hoạch`);
   };
 
   const totalCourses = semesters.reduce((sum, s) => sum + s.courses.length, 0);
+
+  // Extract unique planned semesters
+  const plannedSemesterNames = Array.from(new Set(registrations.map(r => r.semesterName)));
+  const availablePlannedSemesters = plannedSemesterNames.filter(
+    name => !semesters.some(s => s.name === name)
+  );
+
+  const renderAddPlannedDropdown = (variant: "secondary" | "outline" = "secondary") => (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant={variant} className="gap-2" disabled={plannerLoading || registrations.length === 0}>
+          <ListPlus className="w-4 h-4" />
+          Thêm môn Kế hoạch
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuLabel>Chọn học kỳ Kế hoạch</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        {availablePlannedSemesters.length === 0 ? (
+          <DropdownMenuItem disabled className="text-muted-foreground">
+            Không còn kỳ nào mới
+          </DropdownMenuItem>
+        ) : (
+          availablePlannedSemesters.map(name => (
+            <DropdownMenuItem key={name} onClick={() => handleAddPlanned(name)} className="cursor-pointer">
+              {name}
+            </DropdownMenuItem>
+          ))
+        )}
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
 
   return (
     <div className="min-h-screen bg-background">
@@ -66,10 +100,7 @@ const Predictor = () => {
                   <Download className="w-4 h-4" />
                   Đồng bộ điểm Trang chủ
                 </Button>
-                <Button onClick={handleAddPlanned} variant="secondary" className="gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  Thêm môn Kế hoạch (Course Planner)
-                </Button>
+                {renderAddPlannedDropdown("secondary")}
                 <div className="flex items-center text-sm text-muted-foreground gap-1.5 bg-background/50 px-3 py-1.5 rounded-full border border-border">
                   <Info className="w-4 h-4 text-blue-500" />
                   <span>Dữ liệu giả lập được lưu tạm trên thiết bị này.</span>
@@ -132,10 +163,7 @@ const Predictor = () => {
                   <Download className="w-4 h-4" />
                   Đồng bộ Trang chủ
                 </Button>
-                <Button onClick={handleAddPlanned} variant="secondary" className="gap-2">
-                  <BookOpen className="w-4 h-4" />
-                  Thêm môn Kế hoạch
-                </Button>
+                {renderAddPlannedDropdown("secondary")}
               </div>
             </div>
           ) : (
