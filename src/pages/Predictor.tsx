@@ -139,4 +139,4 @@ const Predictor = () => {
   );
 };
 
-export default Predictor;export default Predictor;
+export default Predictor;
