@@ -1,7 +1,7 @@
 import { Calculator, BookOpen, Download, Info, Search } from 'lucide-react';
 import Header from '@/components/Header';
 import StatsCard from '@/components/StatsCard';
-import SemesterCard from '@/components/SemesterCard';
+import PredictorSemesterCard from '@/components/predictor/PredictorSemesterCard';
 import AddSemesterDialog from '@/components/AddSemesterDialog';
 import { useSemestersCloud } from '@/hooks/useSemestersCloud';
 import { usePlannerCloud } from '@/hooks/usePlannerCloud';
@@ -19,6 +19,7 @@ const Predictor = () => {
     cpa,
     cpaTotalCredits,
     syncFromData,
+    addPlannedSemesters,
     addSemester,
     deleteSemester,
     addCourse,
@@ -27,9 +28,15 @@ const Predictor = () => {
   } = usePredictor();
 
   const handleSync = () => {
-    if (dataLoading || plannerLoading) return;
-    syncFromData(cloudSemesters, registrations);
-    toast.success('Đã tải lại dữ liệu từ hệ thống');
+    if (dataLoading) return;
+    syncFromData(cloudSemesters);
+    toast.success('Đã tải lại dữ liệu từ Trang chủ');
+  };
+
+  const handleAddPlanned = () => {
+    if (plannerLoading) return;
+    addPlannedSemesters(registrations);
+    toast.success('Đã thêm các môn trong kế hoạch');
   };
 
   const totalCourses = semesters.reduce((sum, s) => sum + s.courses.length, 0);
@@ -57,7 +64,11 @@ const Predictor = () => {
               <div className="mt-4 flex flex-wrap items-center gap-3">
                 <Button onClick={handleSync} className="gap-2">
                   <Download className="w-4 h-4" />
-                  Đồng bộ dữ liệu hiện tại
+                  Đồng bộ điểm Trang chủ
+                </Button>
+                <Button onClick={handleAddPlanned} variant="secondary" className="gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Thêm môn Kế hoạch (Course Planner)
                 </Button>
                 <div className="flex items-center text-sm text-muted-foreground gap-1.5 bg-background/50 px-3 py-1.5 rounded-full border border-border">
                   <Info className="w-4 h-4 text-blue-500" />
@@ -115,15 +126,21 @@ const Predictor = () => {
         <section className="space-y-6">
           {semesters.length === 0 ? (
             <div className="text-center py-12 rounded-2xl border border-dashed border-border bg-muted/20">
-              <p className="text-muted-foreground mb-4">Chưa có học kỳ nào để mô phỏng.</p>
-              <Button onClick={handleSync} variant="outline" className="gap-2">
-                <Download className="w-4 h-4" />
-                Tải dữ liệu từ Trang chủ & Lập kế hoạch
-              </Button>
+              <p className="text-muted-foreground mb-4">Chưa có học kỳ nào để dự đoán.</p>
+              <div className="flex gap-2 justify-center">
+                <Button onClick={handleSync} variant="outline" className="gap-2">
+                  <Download className="w-4 h-4" />
+                  Đồng bộ Trang chủ
+                </Button>
+                <Button onClick={handleAddPlanned} variant="secondary" className="gap-2">
+                  <BookOpen className="w-4 h-4" />
+                  Thêm môn Kế hoạch
+                </Button>
+              </div>
             </div>
           ) : (
             semesterResults.map((result) => (
-              <SemesterCard
+              <PredictorSemesterCard
                 key={result.semester.id}
                 result={result}
                 onDeleteSemester={deleteSemester}

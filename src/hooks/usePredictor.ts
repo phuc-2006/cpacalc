@@ -28,11 +28,13 @@ export const usePredictor = () => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(semesters));
   }, [semesters]);
 
-  const syncFromData = useCallback((actualSemesters: Semester[], registrations: RegistrationEntry[]) => {
-    // Deep clone actual semesters
+  const syncFromData = useCallback((actualSemesters: Semester[]) => {
+    // Deep clone actual semesters from the home page only
     const baseSemesters = JSON.parse(JSON.stringify(actualSemesters)) as Semester[];
-    
-    // Convert registrations to semesters
+    setSemesters(baseSemesters);
+  }, []);
+
+  const addPlannedSemesters = useCallback((registrations: RegistrationEntry[]) => {
     const plannedMap: Record<string, Semester> = {};
     registrations.forEach(r => {
       // Find or create the semester
@@ -57,24 +59,24 @@ export const usePredictor = () => {
 
     const plannedSemesters = Object.values(plannedMap);
     
-    // We could try to merge planned courses into existing semesters if the name matches exactly,
-    // but separating or just pushing is easier. Let's merge if names match.
-    for (const pSem of plannedSemesters) {
-      const existing = baseSemesters.find(s => s.name === pSem.name);
-      if (existing) {
-        // Merge courses, avoid duplicate codes if possible
-        const existingCodes = new Set(existing.courses.map(c => c.code));
-        pSem.courses.forEach(c => {
-          if (!existingCodes.has(c.code)) {
-            existing.courses.push(c);
+    setSemesters(prev => {
+        const newSemesters = [...prev];
+        for (const pSem of plannedSemesters) {
+          const existing = newSemesters.find(s => s.name === pSem.name);
+          if (existing) {
+            // Merge courses, avoid duplicate codes if possible
+            const existingCodes = new Set(existing.courses.map(c => c.code));
+            pSem.courses.forEach(c => {
+              if (!existingCodes.has(c.code)) {
+                existing.courses.push(c);
+              }
+            });
+          } else {
+            newSemesters.push(pSem);
           }
-        });
-      } else {
-        baseSemesters.push(pSem);
-      }
-    }
-
-    setSemesters(baseSemesters);
+        }
+        return newSemesters;
+    });
   }, []);
 
   const addSemester = useCallback((semester: Semester) => {
@@ -136,6 +138,7 @@ export const usePredictor = () => {
     overallGPA,
     gpaTotalCredits,
     syncFromData,
+    addPlannedSemesters,
     addSemester,
     deleteSemester,
     addCourse,
