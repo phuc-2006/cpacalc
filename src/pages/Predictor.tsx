@@ -107,7 +107,7 @@ const Predictor = () => {
             Danh sách học kỳ (Simulated)
           </h2>
           <div className="flex items-center gap-2">
-            <AddSemesterDialog onAddSemester={addSemester} />
+            <AddSemesterDialog onAdd={addSemester} existingSemesters={semesters} />
           </div>
         </section>
 
@@ -139,4 +139,4 @@ const Predictor = () => {
   );
 };
 
-export default Predictor;
+export default Predictor;export default Predictor;
