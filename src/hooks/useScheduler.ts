@@ -9,6 +9,7 @@ import type {
   SolverProgress,
   SolverResult,
 } from '@/types/scheduler';
+import { DEFAULT_MAX_RESULTS, MAX_MAX_RESULTS, MIN_MAX_RESULTS } from '@/types/scheduler';
 import { parseWorkbook, parseWorkbookFromArrayBuffer } from '@/utils/tkb/parseExcel';
 import type { SolverWorkerMessage, SolverWorkerRequest } from '@/utils/tkb/solver.worker';
 import { solve } from '@/utils/tkb/solver';
@@ -23,6 +24,7 @@ const defaultConstraints: Constraints = {
   avoidSlots: [],
   preferMorning: true,
   allowOnline: true,
+  programs: [],
 };
 
 export interface SavedPlan {
@@ -41,6 +43,7 @@ export const useScheduler = () => {
   const [loadingCache, setLoadingCache] = useState(true);
   const [selectedCodes, setSelectedCodes] = useState<string[]>([]);
   const [constraints, setConstraints] = useState<Constraints>(defaultConstraints);
+  const [maxResults, setMaxResultsRaw] = useState<number>(DEFAULT_MAX_RESULTS);
   const [result, setResult] = useState<SolverResult | null>(null);
   const [progress, setProgress] = useState<SolverProgress | null>(null);
   const [running, setRunning] = useState(false);
@@ -124,10 +127,39 @@ export const useScheduler = () => {
     setConstraints((prev) => ({ ...prev, [key]: value }));
   }, []);
 
+  const togglePrograms = useCallback((program: string) => {
+    setConstraints((prev) => ({
+      ...prev,
+      programs: prev.programs.includes(program)
+        ? prev.programs.filter((p) => p !== program)
+        : [...prev.programs, program],
+    }));
+  }, []);
+
+  const setMaxResults = useCallback((value: number) => {
+    if (!Number.isFinite(value)) return;
+    const clamped = Math.max(MIN_MAX_RESULTS, Math.min(MAX_MAX_RESULTS, Math.round(value)));
+    setMaxResultsRaw(clamped);
+  }, []);
+
+  const availablePrograms = useMemo(() => {
+    if (!parsed) return [] as { name: string; count: number }[];
+    const map = new Map<string, number>();
+    for (const s of parsed.sections) {
+      if (!s.program) continue;
+      map.set(s.program, (map.get(s.program) ?? 0) + 1);
+    }
+    return [...map.entries()]
+      .map(([name, count]) => ({ name, count }))
+      .sort((a, b) => b.count - a.count);
+  }, [parsed]);
+
   const courseCatalog = useMemo(() => {
     if (!parsed) return [] as { code: string; name: string; credits: number; sectionCount: number }[];
+    const programWhitelist = constraints.programs.length > 0 ? new Set(constraints.programs) : null;
     const map = new Map<string, { code: string; name: string; credits: number; sectionCount: number }>();
     for (const s of parsed.sections) {
+      if (programWhitelist && s.program && !programWhitelist.has(s.program)) continue;
       const entry = map.get(s.courseCode);
       if (entry) entry.sectionCount += 1;
       else
@@ -139,7 +171,15 @@ export const useScheduler = () => {
         });
     }
     return [...map.values()].sort((a, b) => a.code.localeCompare(b.code));
-  }, [parsed]);
+  }, [parsed, constraints.programs]);
+
+  useEffect(() => {
+    if (!parsed) return;
+    if (constraints.programs.length > 0) return;
+    if (availablePrograms.length === 0) return;
+    const preferred = availablePrograms.find((p) => p.name === 'CT CHUẨN')?.name ?? availablePrograms[0].name;
+    setConstraints((prev) => ({ ...prev, programs: [preferred] }));
+  }, [parsed, availablePrograms, constraints.programs.length]);
 
   const runSolve = useCallback(() => {
     if (!parsed) {
@@ -165,6 +205,7 @@ export const useScheduler = () => {
     if (!worker) {
       try {
         const res = solve(parsed.sections, selectedCodes, constraints, {
+          maxResults,
           onProgress: (p) => setProgress(p),
         });
         setResult(res);
@@ -207,9 +248,10 @@ export const useScheduler = () => {
       sections: parsed.sections,
       selectedCodes,
       constraints,
+      maxResults,
     };
     worker.postMessage(payload);
-  }, [parsed, selectedCodes, constraints]);
+  }, [parsed, selectedCodes, constraints, maxResults]);
 
   const cancelSolve = useCallback(() => {
     workerRef.current?.terminate();
@@ -304,6 +346,10 @@ export const useScheduler = () => {
     toggleDayOff,
     setBooleanConstraint,
     setConstraints,
+    togglePrograms,
+    maxResults,
+    setMaxResults,
+    availablePrograms,
     courseCatalog,
     runSolve,
     cancelSolve,

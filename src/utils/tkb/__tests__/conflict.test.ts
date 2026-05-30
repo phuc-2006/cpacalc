@@ -9,6 +9,7 @@ const makeSection = (overrides: Partial<ClassSection> & { meetings: ClassSection
   classType: 'LT',
   credits: 3,
   isOnline: false,
+  program: 'CT CHUẨN',
   ...overrides,
 });
 

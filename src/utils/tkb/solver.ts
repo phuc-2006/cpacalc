@@ -19,13 +19,44 @@ export interface SolverOptions {
 }
 
 const DEFAULT_OPTIONS: Required<Omit<SolverOptions, 'onProgress'>> = {
-  maxResults: 200,
+  maxResults: 50,
   maxNodes: 500_000,
   progressIntervalMs: 80,
 };
 
 function defaultConstraints(): Constraints {
-  return { dayOff: [], avoidSlots: [], preferMorning: true, allowOnline: true };
+  return { dayOff: [], avoidSlots: [], preferMorning: true, allowOnline: true, programs: [] };
+}
+
+function meetingSignature(section: ClassSection): string {
+  const parts = section.meetings.map((m) => {
+    const weeks = [...m.weeks].sort((a, b) => a - b).join(',');
+    return `${m.day}|${m.startSlot}-${m.endSlot}|${weeks}`;
+  });
+  parts.sort();
+  return parts.join(';');
+}
+
+function bundleSignature(bundle: ClassSection[]): string {
+  return bundle.map(meetingSignature).sort().join('//');
+}
+
+function dedupBundles(bundles: ClassSection[][]): ClassSection[][] {
+  const seen = new Map<string, ClassSection[]>();
+  for (const bundle of bundles) {
+    const sig = bundleSignature(bundle);
+    const existing = seen.get(sig);
+    if (!existing) {
+      seen.set(sig, bundle.map((section) => ({ ...section, equivalentClassIds: [section.classId] })));
+      continue;
+    }
+    for (let i = 0; i < bundle.length; i++) {
+      const list = existing[i].equivalentClassIds ?? [existing[i].classId];
+      if (!list.includes(bundle[i].classId)) list.push(bundle[i].classId);
+      existing[i].equivalentClassIds = list;
+    }
+  }
+  return [...seen.values()];
 }
 
 export function buildCourseGroups(sections: ClassSection[], selectedCodes: string[]): CourseGroup[] {
@@ -58,7 +89,6 @@ export function buildCourseGroups(sections: ClassSection[], selectedCodes: strin
 
     const bundles: ClassSection[][] = [];
     if (parents.length === 0) {
-      // Orphans: every section is its own bundle
       for (const s of list) bundles.push([s]);
     } else {
       for (const parent of parents) {
@@ -75,14 +105,16 @@ export function buildCourseGroups(sections: ClassSection[], selectedCodes: strin
       courseCode: code,
       courseName: list[0]?.courseName ?? code,
       credits: list[0]?.credits ?? 0,
-      bundles,
+      bundles: dedupBundles(bundles),
     });
   }
   return groups;
 }
 
 function bundleViolatesConstraints(bundle: ClassSection[], c: Constraints): boolean {
+  const programWhitelist = c.programs.length > 0 ? new Set(c.programs) : null;
   for (const section of bundle) {
+    if (programWhitelist && section.program && !programWhitelist.has(section.program)) return true;
     if (!c.allowOnline && section.isOnline) return true;
     for (const m of section.meetings) {
       if (c.dayOff.includes(m.day)) return true;

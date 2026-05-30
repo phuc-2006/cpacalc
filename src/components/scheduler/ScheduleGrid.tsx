@@ -126,8 +126,17 @@ const ScheduleGrid = ({ sections, compact = false }: Props) => {
                           <TooltipContent side="right" className="max-w-xs">
                             <div className="font-semibold">{cell.section.courseName}</div>
                             <div className="text-xs">Lớp {cell.section.classId} · {cell.section.classType}</div>
+                            {cell.section.program && (
+                              <div className="text-xs">Chương trình: {cell.section.program}</div>
+                            )}
                             <div className="text-xs">Tiết {cell.startSlot}-{cell.endSlot} · {cell.room || 'online'}</div>
                             <div className="text-xs">Tuần: {summarizeWeeks(cell.weeks)}</div>
+                            {cell.section.equivalentClassIds && cell.section.equivalentClassIds.length > 1 && (
+                              <div className="text-xs text-muted-foreground mt-1">
+                                {cell.section.equivalentClassIds.length} lớp trùng thời gian:{' '}
+                                {cell.section.equivalentClassIds.join(', ')}
+                              </div>
+                            )}
                           </TooltipContent>
                         </Tooltip>
                       </td>

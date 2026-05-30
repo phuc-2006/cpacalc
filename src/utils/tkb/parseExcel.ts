@@ -73,6 +73,7 @@ interface RawRow {
   weeks: number[];
   room: string;
   note: string;
+  program: string;
 }
 
 function readRow(r: unknown[]): RawRow | null {
@@ -93,6 +94,7 @@ function readRow(r: unknown[]): RawRow | null {
     weeks: parseWeeks(String(r[15] ?? '')),
     room: isNullish(r[16]) ? '' : String(r[16]).trim(),
     note: isNullish(r[8]) ? '' : String(r[8]).trim(),
+    program: isNullish(r[24]) ? '' : String(r[24]).trim(),
   };
 }
 
@@ -126,6 +128,7 @@ function aggregateRows(raw: RawRow[]): ClassSection[] {
         parentClassId,
         isOnline: false,
         note: r.note || undefined,
+        program: r.program,
       };
       byClassId.set(r.classId, section);
     }

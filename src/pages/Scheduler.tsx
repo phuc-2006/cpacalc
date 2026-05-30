@@ -70,6 +70,10 @@ const Scheduler = () => {
               constraints={scheduler.constraints}
               onToggleDayOff={scheduler.toggleDayOff}
               onSetBoolean={scheduler.setBooleanConstraint}
+              onTogglePrograms={scheduler.togglePrograms}
+              availablePrograms={scheduler.availablePrograms}
+              maxResults={scheduler.maxResults}
+              onSetMaxResults={scheduler.setMaxResults}
             />
             <div className="flex justify-end">
               <Button

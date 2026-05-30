@@ -20,6 +20,8 @@ export interface ClassSection {
   parentClassId?: string;
   isOnline: boolean;
   note?: string;
+  program: string;
+  equivalentClassIds?: string[];
 }
 
 export interface CourseGroup {
@@ -34,7 +36,12 @@ export interface Constraints {
   avoidSlots: { day: DayOfWeek; slots: number[] }[];
   preferMorning: boolean;
   allowOnline: boolean;
+  programs: string[];
 }
+
+export const DEFAULT_MAX_RESULTS = 50;
+export const MIN_MAX_RESULTS = 1;
+export const MAX_MAX_RESULTS = 500;
 
 export interface ScoredSchedule {
   sections: ClassSection[];
