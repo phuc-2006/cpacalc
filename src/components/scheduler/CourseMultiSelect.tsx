@@ -56,7 +56,7 @@ const CourseMultiSelect = ({ catalog, selectedCodes, onToggle, onRemove }: Props
                 <CommandList>
                   <CommandEmpty>Không có môn phù hợp.</CommandEmpty>
                   <CommandGroup>
-                    {catalog.slice(0, 200).map((entry) => {
+                    {catalog.map((entry) => {
                       const checked = selectedSet.has(entry.code);
                       return (
                         <CommandItem

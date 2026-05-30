@@ -5,6 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ExcelUploader from '@/components/scheduler/ExcelUploader';
 import CourseMultiSelect from '@/components/scheduler/CourseMultiSelect';
 import ConstraintPanel from '@/components/scheduler/ConstraintPanel';
+import PlannerImporter from '@/components/scheduler/PlannerImporter';
 import ResultsList from '@/components/scheduler/ResultsList';
 import SolverProgress from '@/components/scheduler/SolverProgress';
 import SavedPlansList from '@/components/scheduler/SavedPlansList';
@@ -58,6 +59,7 @@ const Scheduler = () => {
           </TabsContent>
 
           <TabsContent value="pick" className="space-y-4 pt-4">
+            <PlannerImporter catalog={scheduler.courseCatalog} onImport={scheduler.setSelectedCodes} />
             <CourseMultiSelect
               catalog={scheduler.courseCatalog}
               selectedCodes={scheduler.selectedCodes}
