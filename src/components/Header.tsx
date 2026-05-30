@@ -1,4 +1,4 @@
-import { GraduationCap, Moon, Sun, ClipboardList, Target } from 'lucide-react';
+import { GraduationCap, Moon, Sun, ClipboardList, Target, CalendarRange } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import UserMenu from '@/components/UserMenu';
 import { Button } from '@/components/ui/button';
@@ -35,6 +35,10 @@ const Header = () => {
             <Link to="/predictor" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
               <GraduationCap className="h-3.5 w-3.5" />
               Dự đoán
+            </Link>
+            <Link to="/scheduler" className="inline-flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors rounded-lg hover:bg-muted">
+              <CalendarRange className="h-3.5 w-3.5" />
+              Xếp TKB
             </Link>
           </nav>
         </div>
