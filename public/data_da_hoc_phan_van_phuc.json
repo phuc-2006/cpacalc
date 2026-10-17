@@ -1,0 +1,64 @@
+[
+  {
+    "name": "Kỳ 1 (2024.1)",
+    "type": "main",
+    "courses": [
+      { "code": "SSH1111", "name": "Triết học Mác - Lênin", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "MI1111", "name": "Giải tích I", "credits": 4, "processScore": 7.5, "finalScore": 7.5, "coefficientPair": "3-7" },
+      { "code": "MI1141", "name": "Đại số", "credits": 4, "processScore": 6.0, "finalScore": 6.0, "coefficientPair": "3-7" },
+      { "code": "PH1111", "name": "Vật lý đại cương I", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2000", "name": "Nhập môn kỹ thuật điện tử-viễn thông", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2021", "name": "Thực tập cơ bản", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" }
+    ]
+  },
+  {
+    "name": "Kỳ 2 (2024.2)",
+    "type": "main",
+    "courses": [
+      { "code": "SSH1121", "name": "Kinh tế chính trị Mác - Lênin", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "EM1170", "name": "Pháp luật đại cương", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "MI1121", "name": "Giải tích II", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "PH1122", "name": "Vật lý đại cương II", "credits": 4, "processScore": 8.0, "finalScore": 8.0, "coefficientPair": "3-7" },
+      { "code": "IT1110", "name": "Tin học đại cương", "credits": 4, "processScore": 8.0, "finalScore": 8.0, "coefficientPair": "3-7" }
+    ]
+  },
+  {
+    "name": "Kỳ 3 (2025.1)",
+    "type": "main",
+    "courses": [
+      { "code": "SSH1131", "name": "Chủ nghĩa xã hội khoa học", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "MI1131", "name": "Giải tích III", "credits": 3, "processScore": 7.5, "finalScore": 7.5, "coefficientPair": "3-7" },
+      { "code": "MI2020", "name": "Xác suất thống kê", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "PH3330", "name": "Vật lý điện tử", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" }
+    ]
+  },
+  {
+    "name": "Kỳ 4 (2025.2)",
+    "type": "main",
+    "courses": [
+      { "code": "ET2100", "name": "Cấu trúc dữ liệu và giải thuật", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2031", "name": "Kỹ thuật lập trình C/C++", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2040", "name: "Cấu kiện điện tử", "credits": 3, "processScore": 7.5, "finalScore": 7.5, "coefficientPair": "3-7" },
+      { "code": "ET2050", "name: "Lý thuyết mạch", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2060", "name: "Tín hiệu và hệ thống", "credits": 3, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ET2072", "name: "Lý thuyết thông tin", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" }
+    ]
+  },
+  {
+    "name": "Kỳ 5 (2026.1)",
+    "type": "main",
+    "courses": [
+      { "code": "MI2010", "name": "Phương pháp tính", "credits": 2, "processScore": 7.5, "finalScore": 7.5, "coefficientPair": "3-7" },
+      { "code": "ET3260", "name": "Kỹ thuật phần mềm ứng dụng", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" }
+    ]
+  },
+  {
+    "name": "Kỳ 6 (2026.2)",
+    "type": "main",
+    "courses": [
+      { "code": "EM1010", "name": "Quản trị học đại cương", "credits": 2, "processScore": 9.0, "finalScore": 9.0, "coefficientPair": "3-7" },
+      { "code": "ED3220", "name": "Kỹ năng mềm", "credits": 2, "processScore": 9.5, "finalScore": 9.5, "coefficientPair": "3-7" },
+      { "code": "ET3262", "name": "Tư duy công nghệ và thiết kế kỹ thuật", "credits": 2, "processScore": 8.0, "finalScore": 8.0, "coefficientPair": "3-7" }
+    ]
+  }
+]
